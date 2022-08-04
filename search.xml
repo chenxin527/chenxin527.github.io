@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>TestAsset</title>
-    <url>/2022/04/14/19c3ad2f.html</url>
-    <content><![CDATA[<p>通过标签插件引用图片 example.jpg</p>
-
-<p>通过常规的 markdown 语法引用 example.jpg
-<img src="./2022-04-14-TestAsset/example.jpg" alt=""></p>
-<p>通过标签插件引用图片 程序在内存中的分布.jpg</p>
-
-<p>通过常规的 markdown 语法引用 程序在内存中的分布.jpg
-<img src="./2022-04-14-TestAsset/%E7%A8%8B%E5%BA%8F%E5%9C%A8%E5%86%85%E5%AD%98%E4%B8%AD%E7%9A%84%E5%88%86%E5%B8%83.png" alt=""></p>
-]]></content>
-  </entry>
-  <entry>
     <title>时间 标题 带空格</title>
     <url>/2022/04/14/9c470f02.html</url>
     <content><![CDATA[]]></content>
+  </entry>
+  <entry>
+    <title>TestAsset</title>
+    <url>/2022/04/14/19c3ad2f.html</url>
+    <content><![CDATA[<p>通过标签插件引用图片 example.jpg</p>
+<img src="/2022/04/14/19c3ad2f/example.jpg" class="" title="This is an example image">
+<p>通过常规的 markdown 语法引用 example.jpg
+<img src="./2022-04-14-TestAsset/example.jpg" alt=""></p>
+<p>通过标签插件引用图片 程序在内存中的分布.png</p>
+<img src="/2022/04/14/19c3ad2f/%E7%A8%8B%E5%BA%8F%E5%9C%A8%E5%86%85%E5%AD%98%E4%B8%AD%E7%9A%84%E5%88%86%E5%B8%83.png" class="" title="程序在内存中的分布">
+<p>通过常规的 markdown 语法引用 程序在内存中的分布.png
+<img src="./2022-04-14-TestAsset/%E7%A8%8B%E5%BA%8F%E5%9C%A8%E5%86%85%E5%AD%98%E4%B8%AD%E7%9A%84%E5%88%86%E5%B8%83.png" alt=""></p>
+]]></content>
   </entry>
   <entry>
     <title>这是要发布的文章</title>
@@ -28,9 +28,466 @@
       </categories>
   </entry>
   <entry>
+    <title>gitee</title>
+    <url>/2022/08/03/ddb42e70.html</url>
+    <content><![CDATA[]]></content>
+  </entry>
+  <entry>
+    <title>是</title>
+    <url>/2022/08/03/addfcb6b.html</url>
+    <content><![CDATA[]]></content>
+  </entry>
+  <entry>
+    <title>Markdown 学习笔记</title>
+    <url>/2022/04/12/e8e3b494.html</url>
+    <content><![CDATA[<p>[toc]</p>
+<h1 id="这是一级标题"><a class="markdownIt-Anchor" href="#这是一级标题"></a> 这是一级标题</h1>
+<h2 id="这是二级标题"><a class="markdownIt-Anchor" href="#这是二级标题"></a> 这是二级标题</h2>
+<span id="more"></span>
+<h3 id="这是三级标题"><a class="markdownIt-Anchor" href="#这是三级标题"></a> 这是三级标题</h3>
+<h4 id="这是四级标题"><a class="markdownIt-Anchor" href="#这是四级标题"></a> 这是四级标题</h4>
+<h5 id="这是五级标题"><a class="markdownIt-Anchor" href="#这是五级标题"></a> 这是五级标题</h5>
+<h6 id="这是六级标题"><a class="markdownIt-Anchor" href="#这是六级标题"></a> 这是六级标题</h6>
+<h1 id="这也是一级标题"><a class="markdownIt-Anchor" href="#这也是一级标题"></a> 这也是一级标题</h1>
+<p>这也是二级标题(三个减号)</p>
+<h1 id="文档标题"><a class="markdownIt-Anchor" href="#文档标题"></a> 文档标题</h1>
+<p>作者</p>
+<p>摘要</p>
+<p>目录</p>
+<h2 id="标题1"><a class="markdownIt-Anchor" href="#标题1"></a> 标题1</h2>
+<h3 id="标题11"><a class="markdownIt-Anchor" href="#标题11"></a> 标题1.1</h3>
+<h2 id="标题2"><a class="markdownIt-Anchor" href="#标题2"></a> 标题2</h2>
+<h3 id="标题21"><a class="markdownIt-Anchor" href="#标题21"></a> 标题2.1</h3>
+<h3 id="标题22"><a class="markdownIt-Anchor" href="#标题22"></a> 标题2.2</h3>
+<h2 id="粗体"><a class="markdownIt-Anchor" href="#粗体"></a> 粗体</h2>
+<p>我是<strong>粗体</strong></p>
+<p>我也是 <strong>粗体</strong></p>
+<h2 id="斜体"><a class="markdownIt-Anchor" href="#斜体"></a> 斜体</h2>
+<p>我是<em>斜体</em></p>
+<p>我也是 <em>斜体</em></p>
+<h2 id="没有空行"><a class="markdownIt-Anchor" href="#没有空行"></a> 没有空行</h2>
+<p>我是第一行
+我是第二行</p>
+<h2 id="有空行"><a class="markdownIt-Anchor" href="#有空行"></a> 有空行</h2>
+<p>我是第一行</p>
+<p>我是第二行</p>
+<h2 id="段内换行"><a class="markdownIt-Anchor" href="#段内换行"></a> 段内换行</h2>
+<p>我是第一行，如果想段内换行需要在结尾插入两个以上的空格<br>
+我是第二行</p>
+<h2 id="空行"><a class="markdownIt-Anchor" href="#空行"></a> 空行</h2>
+<p>空行符&lt;br&gt;</p>
+<p>大家好，本文参考的是:
+<a href="https://github.com/google/styleguide/blog/gh-pages/docguide/style.md">Google Markdown Style Guide</a></p>
+<p>大家好，本文参考的是：<a href="https://github.com/google/styleguide/blog/gh-pages/docguide/style.md">Google Markdown Style Guide</a></p>
+<h2 id="有序列表"><a class="markdownIt-Anchor" href="#有序列表"></a> 有序列表</h2>
+<ol>
+<li>我有一个梦想</li>
+<li>我有两个梦想</li>
+<li>我有三个梦想</li>
+</ol>
+<h2 id="无序列表"><a class="markdownIt-Anchor" href="#无序列表"></a> 无序列表</h2>
+<h3 id="使用星号"><a class="markdownIt-Anchor" href="#使用星号"></a> 使用星号</h3>
+<ul>
+<li>使用【星号】标识无序列表</li>
+<li>使用【星号】标识无序列表</li>
+<li>使用【星号】标识无序列表</li>
+</ul>
+<h3 id="使用加号"><a class="markdownIt-Anchor" href="#使用加号"></a> 使用加号</h3>
+<ul>
+<li>使用【加号】标识无序列表</li>
+<li>使用【加号】标识无序列表</li>
+<li>使用【加号】标识无序列表</li>
+</ul>
+<h3 id="使用减号"><a class="markdownIt-Anchor" href="#使用减号"></a> 使用减号</h3>
+<ul>
+<li>使用【减号】标识无序列表</li>
+<li>使用【减号】标识无序列表</li>
+<li>使用【减号】标识无序列表</li>
+</ul>
+<h2 id="嵌套列表"><a class="markdownIt-Anchor" href="#嵌套列表"></a> 嵌套列表</h2>
+<ul>
+<li>这是第一层列表
+<ul>
+<li>这是第二层列表
+<ul>
+<li>这是第三层列表
+<ul>
+<li>这是第四层列表</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="有序列表与无序列表相互嵌套"><a class="markdownIt-Anchor" href="#有序列表与无序列表相互嵌套"></a> 有序列表与无序列表相互嵌套</h2>
+<ol>
+<li>我是一层列表
+<ul>
+<li>我是二层列表
+<ol>
+<li>我是三层列表</li>
+<li>我也是三层列表</li>
+</ol>
+</li>
+</ul>
+</li>
+</ol>
+<ul>
+<li>
+<p>这个列表项<br>
+有换行</p>
+</li>
+<li>
+<p>这个没有</p>
+</li>
+</ul>
+<ol>
+<li>
+<p>这个有序列表项<br>
+有换行</p>
+</li>
+<li>
+<p>这个没有</p>
+</li>
+</ol>
+<ul>
+<li>抽烟</li>
+<li>喝酒</li>
+<li>烫头</li>
+</ul>
+<h2 id="推荐"><a class="markdownIt-Anchor" href="#推荐"></a> 推荐</h2>
+<ul>
+<li>
+<p>抽很多的<br>
+烟</p>
+</li>
+<li>
+<p>喝酒</p>
+</li>
+<li>
+<p>烫头</p>
+</li>
+</ul>
+<h2 id="不推荐"><a class="markdownIt-Anchor" href="#不推荐"></a> 不推荐</h2>
+<ul>
+<li>抽很多的<br>
+烟</li>
+<li>喝酒</li>
+<li>烫头</li>
+</ul>
+<h2 id="推荐-2"><a class="markdownIt-Anchor" href="#推荐-2"></a> 推荐</h2>
+<p>我的爱好</p>
+<ul>
+<li>抽烟</li>
+<li>喝酒</li>
+<li>烫头</li>
+</ul>
+<p>跟于老师是一样的</p>
+<h2 id="不推荐-2"><a class="markdownIt-Anchor" href="#不推荐-2"></a> 不推荐</h2>
+<p>我的爱好</p>
+<ul>
+<li>抽烟</li>
+<li>喝酒</li>
+<li>烫头
+跟于老师是一样的</li>
+</ul>
+<h2 id="分隔线"><a class="markdownIt-Anchor" href="#分隔线"></a> 分隔线</h2>
+<h3 id="星号"><a class="markdownIt-Anchor" href="#星号"></a> 星号</h3>
+<hr>
+<hr>
+<hr>
+<h3 id="减号"><a class="markdownIt-Anchor" href="#减号"></a> 减号</h3>
+<hr>
+<hr>
+<hr>
+<h3 id="下划线"><a class="markdownIt-Anchor" href="#下划线"></a> 下划线</h3>
+<hr>
+<hr>
+<hr>
+<h2 id="图片"><a class="markdownIt-Anchor" href="#图片"></a> 图片</h2>
+<h3 id="本地图片无图片替代文字"><a class="markdownIt-Anchor" href="#本地图片无图片替代文字"></a> 本地图片:无图片替代文字</h3>
+<p><img src="./picture/example.jpg" alt=""></p>
+<h3 id="本地图片有图片替代文字"><a class="markdownIt-Anchor" href="#本地图片有图片替代文字"></a> 本地图片:有图片替代文字</h3>
+<p><img src="./picture/example.jpg" alt="本地图片"></p>
+<h2 id="链接"><a class="markdownIt-Anchor" href="#链接"></a> 链接</h2>
+<h3 id="文字链接"><a class="markdownIt-Anchor" href="#文字链接"></a> 文字链接</h3>
+<p>在日常工作中我们经常使用的网址有<a href="https://www.google.com/">Google</a>、<a href="https://github.com/">Github</a>和<a href="https://stackoverflow.com/?utm_source=rss&amp;utm_medium=rss">Stack overflow</a></p>
+<h3 id="引用链接"><a class="markdownIt-Anchor" href="#引用链接"></a> 引用链接</h3>
+<p>在日常工作中我们经常使用的网址有<a href="https://www.google.com/">Google</a>、<a href="https://github.com/">Github</a>和<a href="https://stackoverflow.com/?utm_source=rss&amp;utm_medium=rss">Stack overflow</a></p>
+<p>在正文中引用链接标记，可以理解为引用定义好的变量：</p>
+<p><a href="https://www.google.com/">谷歌官网</a></p>
+<p>在底部定义链接标记，可以理解为定义一个地址变量：</p>
+<h3 id="网址链接"><a class="markdownIt-Anchor" href="#网址链接"></a> 网址链接</h3>
+<p><a href="https://www.google.com/">https://www.google.com/</a></p>
+<p><a href="mailto:wirelessqa@163.com">wirelessqa@163.com</a></p>
+<h2 id="行内代码与代码块"><a class="markdownIt-Anchor" href="#行内代码与代码块"></a> 行内代码与代码块</h2>
+<h3 id="行内代码"><a class="markdownIt-Anchor" href="#行内代码"></a> 行内代码</h3>
+<p>使用<sub>cd…</sub>命令切换到上一级目录。</p>
+<p>这是一个<sub>行内代码</sub></p>
+<p><sub>行内代码不能有空格</sub></p>
+<h3 id="代码块"><a class="markdownIt-Anchor" href="#代码块"></a> 代码块</h3>
+<p>以Tab键开头：</p>
+<pre><code>This_is_a_code_bkock()
+</code></pre>
+<p>或者以4个空格开头：</p>
+<pre><code>This_is_a_code_block()
+</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">#include&lt;stdio.h&gt;</span><br><span class="line">#define NAME &quot;WuWangwang&quot;</span><br><span class="line">#define ADDR &quot;An Shun, Gui Zhou&quot;</span><br><span class="line"></span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">    printf(&quot;Name: %s\n&quot;,NAME);</span><br><span class="line">    printf(&quot;Address: %s\n&quot;,ADDR);</span><br><span class="line"></span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre><code>#include&lt;stdio.h&gt;
+#define NAME &quot;WuWangwang&quot;
+#define ADDR &quot;An Shun, Gui Zhou&quot;
+
+int main()
+&#123;
+    printf(&quot;Name: %s\n&quot;,NAME);
+    printf(&quot;Address: %s\n&quot;,ADDR);
+
+    return 0;
+&#125;
+</code></pre>
+<h2 id="引用"><a class="markdownIt-Anchor" href="#引用"></a> 引用</h2>
+<blockquote>
+<p>我是引用的句子，请在我的前面加上&gt;(大于号)</p>
+</blockquote>
+<p>正常的句子是这样的</p>
+<h3 id="多行引用"><a class="markdownIt-Anchor" href="#多行引用"></a> 多行引用</h3>
+<blockquote>
+<p>这是多行引用的第一行，我的最后有两个空格。<br>
+这是多行引用的第二行</p>
+</blockquote>
+<h3 id="多行引用-2"><a class="markdownIt-Anchor" href="#多行引用-2"></a> 多行引用</h3>
+<blockquote>
+<p>这是多行引用的第一行</p>
+<p>这是多行引用的第二行</p>
+</blockquote>
+<h3 id="引用中嵌套引用"><a class="markdownIt-Anchor" href="#引用中嵌套引用"></a> 引用中嵌套引用</h3>
+<blockquote>
+<p>引用中是可以嵌套引用的</p>
+<blockquote>
+<p>我是引用中嵌套的引用</p>
+</blockquote>
+</blockquote>
+<h3 id="引用中使用其他-markdown-标记"><a class="markdownIt-Anchor" href="#引用中使用其他-markdown-标记"></a> 引用中使用其他 markdown 标记</h3>
+<blockquote>
+<p>来点击查看我的<a href="http://www.weibo.com">微博</a>
+<strong>加粗</strong>和<em>斜体</em>也是支持的。</p>
+</blockquote>
+<h2 id="转义"><a class="markdownIt-Anchor" href="#转义"></a> 转义</h2>
+<p>\
+*
+#
++
+-
+.
+!
+~
+_
+{}
+[]
+()</p>
+<h2 id="扩展语法"><a class="markdownIt-Anchor" href="#扩展语法"></a> 扩展语法</h2>
+<h3 id="删除线"><a class="markdownIt-Anchor" href="#删除线"></a> 删除线</h3>
+<p>这是<s>删除线</s></p>
+<p>这是<s>删除线删除线<br>
+删除线删除线</s></p>
+<h3 id="表情符号"><a class="markdownIt-Anchor" href="#表情符号"></a> 表情符号</h3>
+<p>😄
+😆
+👍
+👎
+👏
+😧
+😙</p>
+<p>更多的表情符号请参考<a href="http://www.webpagefx.com/tools/emoji-cheat-sheet/">http://www.webpagefx.com/tools/emoji-cheat-sheet/</a></p>
+<h3 id="自动链接"><a class="markdownIt-Anchor" href="#自动链接"></a> 自动链接</h3>
+<p>标准语法中由 &lt;&gt; 包裹的 URL 地址被自动识别并解析为超链接。</p>
+<p>如：</p>
+<p><a href="http://www.baidu.com">http://www.baidu.com</a></p>
+<p>使用 GFM 扩展语法可以不使用 &lt;&gt; 包裹</p>
+<p>如：</p>
+<p>www.baidu.com</p>
+<p>http://baidu.com</p>
+<p>http://www.baidu.com</p>
+<h3 id="表格"><a class="markdownIt-Anchor" href="#表格"></a> 表格</h3>
+<h4 id="表格格式"><a class="markdownIt-Anchor" href="#表格格式"></a> 表格格式</h4>
+<table>
+<thead>
+<tr>
+<th>序号</th>
+<th>标题</th>
+<th>网址</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>01</td>
+<td>博客</td>
+<td>http://blog.csdn.net/wirelessqa</td>
+</tr>
+<tr>
+<td>02</td>
+<td>微博</td>
+<td>http://www.weibo.com/wirelessqa</td>
+</tr>
+</tbody>
+</table>
+<h4 id="对齐格式"><a class="markdownIt-Anchor" href="#对齐格式"></a> 对齐格式</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">左对齐</th>
+<th style="text-align:center">居中对齐</th>
+<th style="text-align:right">右对齐</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">01</td>
+<td style="text-align:center">博客</td>
+<td style="text-align:right">http://blog.csdn.net/wirelessqa</td>
+</tr>
+<tr>
+<td style="text-align:left">02</td>
+<td style="text-align:center">微博</td>
+<td style="text-align:right">http://www.weibo.com/wirelessqa</td>
+</tr>
+</tbody>
+</table>
+<h4 id="表格内使用其他标记"><a class="markdownIt-Anchor" href="#表格内使用其他标记"></a> 表格内使用其他标记</h4>
+<table>
+<thead>
+<tr>
+<th>序号</th>
+<th>标题</th>
+<th>网址</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><em>01</em></td>
+<td><a href="http://blog.csdn.net/wirelessqa">博客</a></td>
+<td>http://blog.csdn.net/wirelessqa</td>
+</tr>
+<tr>
+<td><strong>02</strong></td>
+<td><a href="http://www.weibo.com/wirelessqa">微博</a></td>
+<td>http://www.weibo.com/wirelessqa</td>
+</tr>
+</tbody>
+</table>
+<p>人员列表：</p>
+<table>
+<thead>
+<tr>
+<th>序号</th>
+<th>姓名</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>张三</td>
+</tr>
+<tr>
+<td>2</td>
+<td>李四</td>
+</tr>
+</tbody>
+</table>
+<p>好多熟悉的名字</p>
+<h3 id="任务列表"><a class="markdownIt-Anchor" href="#任务列表"></a> 任务列表</h3>
+<p>今日工作：</p>
+<ul>
+<li>[x] 吃</li>
+<li>[x] 喝</li>
+<li>[ ] 玩</li>
+</ul>
+<p>明日计划：</p>
+<ul>
+<li>[ ] 吃
+<ul>
+<li>[ ] 吃鱼</li>
+<li>[ ] 吃瓜</li>
+</ul>
+</li>
+<li>[x] 睡</li>
+</ul>
+<h3 id="围栏代码块"><a class="markdownIt-Anchor" href="#围栏代码块"></a> 围栏代码块</h3>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">def test_print():</span><br><span class="line">    pass</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">test_print</span>():</span><br><span class="line">    <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
+<p>进入C语言代码块：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;Hello world!\n);</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    return 0;</span></span><br><span class="line"><span class="string">&#125;</span></span><br></pre></td></tr></table></figure>
+<p>优秀！</p>
+<h3 id="锚点"><a class="markdownIt-Anchor" href="#锚点"></a> 锚点</h3>
+<p>目录</p>
+<ul>
+<li><a href="#%E5%AF%B9%E9%BD%90%E6%A0%BC%E5%BC%8F">对齐格式</a></li>
+<li><a href="#%E8%A1%A8%E6%A0%BC%E5%86%85%E4%BD%BF%E7%94%A8%E5%85%B6%E4%BB%96%E6%A0%87%E8%AE%B0">表格内使用其他标记</a></li>
+</ul>
+<h3 id="更改字体-大小-颜色"><a class="markdownIt-Anchor" href="#更改字体-大小-颜色"></a> 更改字体、大小、颜色</h3>
+<p><font face="黑体">我是黑体</font></p>
+<p><font face="STCAIYUN">我是华文彩云</font></p>
+<p><font face="微软雅黑">我是微软雅黑</font></p>
+<p><font color=red>我是红色</font></p>
+<p><font color=#008000>我是绿色</font></p>
+<p><font color=Blue>我是蓝色</font></p>
+<p><font size=5>我是尺寸</font></p>
+<p><font face="华文彩云" color=purple size=5>我是华文彩云，蓝色，字号为5</font></p>
+<h3 id="其他"><a class="markdownIt-Anchor" href="#其他"></a> 其他</h3>
+<ul>
+<li>分页</li>
+</ul>
+<p>在需要分页的地方插入以下代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;div style=&quot;page-break-after:always;&quot;&gt;&lt;/div&gt;</span><br></pre></td></tr></table></figure>
+<p>分页效果在导出的PDF文件中体现。</p>
+<h3 id="数学公式"><a class="markdownIt-Anchor" href="#数学公式"></a> 数学公式</h3>
+<p>快捷键：Ctrl + M</p>
+<p><span class="katex"><span class="katex-mathml"><math><semantics><mrow><msup><mi>a</mi><mn>2</mn></msup><mo>+</mo><msup><mi>b</mi><mn>2</mn></msup><mo>=</mo><msup><mi>c</mi><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">a^2+b^2=c^2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.897438em;vertical-align:-0.08333em;"></span><span class="mord"><span class="mord mathdefault">a</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.8141079999999999em;vertical-align:0em;"></span><span class="mord"><span class="mord mathdefault">b</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.8141079999999999em;vertical-align:0em;"></span><span class="mord"><span class="mord mathdefault">c</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span></span></p>
+<p><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>y</mi><mo>=</mo><mi>x</mi><mo>+</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">y=x+1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.19444em;"></span><span class="mord mathdefault" style="margin-right:0.03588em;">y</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.66666em;vertical-align:-0.08333em;"></span><span class="mord mathdefault">x</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">1</span></span></span></span></p>
+<h3 id="引用文件"><a class="markdownIt-Anchor" href="#引用文件"></a> 引用文件</h3>
+<blockquote>
+<p>@import &quot;文件名</p>
+</blockquote>
+<blockquote>
+<p>&lt;!-- @import “文件名” --&gt;</p>
+</blockquote>
+<p>以下是文件引用:
+@import “pasteimage.md”</p>
+<p>文件引用到此结束</p>
+<hr>
+<p>@import “https://github.com/kennethreitz/responder/blod/master/README.md”</p>
+<h3 id="引用图片"><a class="markdownIt-Anchor" href="#引用图片"></a> 引用图片</h3>
+<ul>
+<li>
+<p>直接引用图片
+@import “picture/exp11.png”</p>
+</li>
+<li>
+<p>在引用图片的同时设置图片的大小(好像没用。。。尴尬。)
+@import “picture/example.jpg” (width=“10px” height=“20px” title=“哈哈哈” alt=“这是哈哈哈哈哈哈”)</p>
+</li>
+</ul>
+<h3 id="幻灯片"><a class="markdownIt-Anchor" href="#幻灯片"></a> 幻灯片</h3>
+<blockquote>
+<!-- slide -->
+<h1 id="第-1-页"><a class="markdownIt-Anchor" href="#第-1-页"></a> 第 1 页</h1>
+<p>猜猜我是谁？</p>
+<!-- slide -->
+<h1 id="第-2-页"><a class="markdownIt-Anchor" href="#第-2-页"></a> 第 2 页</h1>
+<p><img src="picture/example.jpg" alt="">
+哈哈哈哈哈，我 giao！</p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>测试</category>
+      </categories>
+  </entry>
+  <entry>
     <title>Markdown 学习笔记第二版</title>
     <url>/2022/08/03/1d8ff3c8.html</url>
     <content><![CDATA[<link href="https://lf9-cdn-tos.bytecdntp.com/cdn/expire-1-M/KaTeX/0.10.2/katex.min.css" rel="stylesheet">
+<span id="more"></span>
 <h1 id="总目录"><a class="markdownIt-Anchor" href="#总目录"></a> 总目录</h1>
 <p><ul class="markdownIt-TOC">
 <li><a href="#%E8%BF%99%E6%98%AF%E4%BA%8C%E7%BA%A7%E6%A0%87%E9%A2%98">这是二级标题</a>
@@ -648,462 +1105,6 @@ F_R       &amp;      &amp; {S_R \leq 0}
 ]]></content>
   </entry>
   <entry>
-    <title>gitee</title>
-    <url>/2022/08/03/ddb42e70.html</url>
-    <content><![CDATA[]]></content>
-  </entry>
-  <entry>
-    <title>是</title>
-    <url>/2022/08/03/addfcb6b.html</url>
-    <content><![CDATA[]]></content>
-  </entry>
-  <entry>
-    <title>Markdown 学习笔记</title>
-    <url>/2022/04/12/e8e3b494.html</url>
-    <content><![CDATA[<p>[toc]</p>
-<h1 id="这是一级标题"><a class="markdownIt-Anchor" href="#这是一级标题"></a> 这是一级标题</h1>
-<h2 id="这是二级标题"><a class="markdownIt-Anchor" href="#这是二级标题"></a> 这是二级标题</h2>
-<span id="more"></span>
-<h3 id="这是三级标题"><a class="markdownIt-Anchor" href="#这是三级标题"></a> 这是三级标题</h3>
-<h4 id="这是四级标题"><a class="markdownIt-Anchor" href="#这是四级标题"></a> 这是四级标题</h4>
-<h5 id="这是五级标题"><a class="markdownIt-Anchor" href="#这是五级标题"></a> 这是五级标题</h5>
-<h6 id="这是六级标题"><a class="markdownIt-Anchor" href="#这是六级标题"></a> 这是六级标题</h6>
-<h1 id="这也是一级标题"><a class="markdownIt-Anchor" href="#这也是一级标题"></a> 这也是一级标题</h1>
-<p>这也是二级标题(三个减号)</p>
-<h1 id="文档标题"><a class="markdownIt-Anchor" href="#文档标题"></a> 文档标题</h1>
-<p>作者</p>
-<p>摘要</p>
-<p>目录</p>
-<h2 id="标题1"><a class="markdownIt-Anchor" href="#标题1"></a> 标题1</h2>
-<h3 id="标题11"><a class="markdownIt-Anchor" href="#标题11"></a> 标题1.1</h3>
-<h2 id="标题2"><a class="markdownIt-Anchor" href="#标题2"></a> 标题2</h2>
-<h3 id="标题21"><a class="markdownIt-Anchor" href="#标题21"></a> 标题2.1</h3>
-<h3 id="标题22"><a class="markdownIt-Anchor" href="#标题22"></a> 标题2.2</h3>
-<h2 id="粗体"><a class="markdownIt-Anchor" href="#粗体"></a> 粗体</h2>
-<p>我是<strong>粗体</strong></p>
-<p>我也是 <strong>粗体</strong></p>
-<h2 id="斜体"><a class="markdownIt-Anchor" href="#斜体"></a> 斜体</h2>
-<p>我是<em>斜体</em></p>
-<p>我也是 <em>斜体</em></p>
-<h2 id="没有空行"><a class="markdownIt-Anchor" href="#没有空行"></a> 没有空行</h2>
-<p>我是第一行
-我是第二行</p>
-<h2 id="有空行"><a class="markdownIt-Anchor" href="#有空行"></a> 有空行</h2>
-<p>我是第一行</p>
-<p>我是第二行</p>
-<h2 id="段内换行"><a class="markdownIt-Anchor" href="#段内换行"></a> 段内换行</h2>
-<p>我是第一行，如果想段内换行需要在结尾插入两个以上的空格<br>
-我是第二行</p>
-<h2 id="空行"><a class="markdownIt-Anchor" href="#空行"></a> 空行</h2>
-<p>空行符&lt;br&gt;</p>
-<p>大家好，本文参考的是:
-<a href="https://github.com/google/styleguide/blog/gh-pages/docguide/style.md">Google Markdown Style Guide</a></p>
-<p>大家好，本文参考的是：<a href="https://github.com/google/styleguide/blog/gh-pages/docguide/style.md">Google Markdown Style Guide</a></p>
-<h2 id="有序列表"><a class="markdownIt-Anchor" href="#有序列表"></a> 有序列表</h2>
-<ol>
-<li>我有一个梦想</li>
-<li>我有两个梦想</li>
-<li>我有三个梦想</li>
-</ol>
-<h2 id="无序列表"><a class="markdownIt-Anchor" href="#无序列表"></a> 无序列表</h2>
-<h3 id="使用星号"><a class="markdownIt-Anchor" href="#使用星号"></a> 使用星号</h3>
-<ul>
-<li>使用【星号】标识无序列表</li>
-<li>使用【星号】标识无序列表</li>
-<li>使用【星号】标识无序列表</li>
-</ul>
-<h3 id="使用加号"><a class="markdownIt-Anchor" href="#使用加号"></a> 使用加号</h3>
-<ul>
-<li>使用【加号】标识无序列表</li>
-<li>使用【加号】标识无序列表</li>
-<li>使用【加号】标识无序列表</li>
-</ul>
-<h3 id="使用减号"><a class="markdownIt-Anchor" href="#使用减号"></a> 使用减号</h3>
-<ul>
-<li>使用【减号】标识无序列表</li>
-<li>使用【减号】标识无序列表</li>
-<li>使用【减号】标识无序列表</li>
-</ul>
-<h2 id="嵌套列表"><a class="markdownIt-Anchor" href="#嵌套列表"></a> 嵌套列表</h2>
-<ul>
-<li>这是第一层列表
-<ul>
-<li>这是第二层列表
-<ul>
-<li>这是第三层列表
-<ul>
-<li>这是第四层列表</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<h2 id="有序列表与无序列表相互嵌套"><a class="markdownIt-Anchor" href="#有序列表与无序列表相互嵌套"></a> 有序列表与无序列表相互嵌套</h2>
-<ol>
-<li>我是一层列表
-<ul>
-<li>我是二层列表
-<ol>
-<li>我是三层列表</li>
-<li>我也是三层列表</li>
-</ol>
-</li>
-</ul>
-</li>
-</ol>
-<ul>
-<li>
-<p>这个列表项<br>
-有换行</p>
-</li>
-<li>
-<p>这个没有</p>
-</li>
-</ul>
-<ol>
-<li>
-<p>这个有序列表项<br>
-有换行</p>
-</li>
-<li>
-<p>这个没有</p>
-</li>
-</ol>
-<ul>
-<li>抽烟</li>
-<li>喝酒</li>
-<li>烫头</li>
-</ul>
-<h2 id="推荐"><a class="markdownIt-Anchor" href="#推荐"></a> 推荐</h2>
-<ul>
-<li>
-<p>抽很多的<br>
-烟</p>
-</li>
-<li>
-<p>喝酒</p>
-</li>
-<li>
-<p>烫头</p>
-</li>
-</ul>
-<h2 id="不推荐"><a class="markdownIt-Anchor" href="#不推荐"></a> 不推荐</h2>
-<ul>
-<li>抽很多的<br>
-烟</li>
-<li>喝酒</li>
-<li>烫头</li>
-</ul>
-<h2 id="推荐-2"><a class="markdownIt-Anchor" href="#推荐-2"></a> 推荐</h2>
-<p>我的爱好</p>
-<ul>
-<li>抽烟</li>
-<li>喝酒</li>
-<li>烫头</li>
-</ul>
-<p>跟于老师是一样的</p>
-<h2 id="不推荐-2"><a class="markdownIt-Anchor" href="#不推荐-2"></a> 不推荐</h2>
-<p>我的爱好</p>
-<ul>
-<li>抽烟</li>
-<li>喝酒</li>
-<li>烫头
-跟于老师是一样的</li>
-</ul>
-<h2 id="分隔线"><a class="markdownIt-Anchor" href="#分隔线"></a> 分隔线</h2>
-<h3 id="星号"><a class="markdownIt-Anchor" href="#星号"></a> 星号</h3>
-<hr>
-<hr>
-<hr>
-<h3 id="减号"><a class="markdownIt-Anchor" href="#减号"></a> 减号</h3>
-<hr>
-<hr>
-<hr>
-<h3 id="下划线"><a class="markdownIt-Anchor" href="#下划线"></a> 下划线</h3>
-<hr>
-<hr>
-<hr>
-<h2 id="图片"><a class="markdownIt-Anchor" href="#图片"></a> 图片</h2>
-<h3 id="本地图片无图片替代文字"><a class="markdownIt-Anchor" href="#本地图片无图片替代文字"></a> 本地图片:无图片替代文字</h3>
-<p><img src="./picture/example.jpg" alt=""></p>
-<h3 id="本地图片有图片替代文字"><a class="markdownIt-Anchor" href="#本地图片有图片替代文字"></a> 本地图片:有图片替代文字</h3>
-<p><img src="./picture/example.jpg" alt="本地图片"></p>
-<h2 id="链接"><a class="markdownIt-Anchor" href="#链接"></a> 链接</h2>
-<h3 id="文字链接"><a class="markdownIt-Anchor" href="#文字链接"></a> 文字链接</h3>
-<p>在日常工作中我们经常使用的网址有<a href="https://www.google.com/">Google</a>、<a href="https://github.com/">Github</a>和<a href="https://stackoverflow.com/?utm_source=rss&amp;utm_medium=rss">Stack overflow</a></p>
-<h3 id="引用链接"><a class="markdownIt-Anchor" href="#引用链接"></a> 引用链接</h3>
-<p>在日常工作中我们经常使用的网址有<a href="https://www.google.com/">Google</a>、<a href="https://github.com/">Github</a>和<a href="https://stackoverflow.com/?utm_source=rss&amp;utm_medium=rss">Stack overflow</a></p>
-<p>在正文中引用链接标记，可以理解为引用定义好的变量：</p>
-<p><a href="https://www.google.com/">谷歌官网</a></p>
-<p>在底部定义链接标记，可以理解为定义一个地址变量：</p>
-<h3 id="网址链接"><a class="markdownIt-Anchor" href="#网址链接"></a> 网址链接</h3>
-<p><a href="https://www.google.com/">https://www.google.com/</a></p>
-<p><a href="mailto:wirelessqa@163.com">wirelessqa@163.com</a></p>
-<h2 id="行内代码与代码块"><a class="markdownIt-Anchor" href="#行内代码与代码块"></a> 行内代码与代码块</h2>
-<h3 id="行内代码"><a class="markdownIt-Anchor" href="#行内代码"></a> 行内代码</h3>
-<p>使用<sub>cd…</sub>命令切换到上一级目录。</p>
-<p>这是一个<sub>行内代码</sub></p>
-<p><sub>行内代码不能有空格</sub></p>
-<h3 id="代码块"><a class="markdownIt-Anchor" href="#代码块"></a> 代码块</h3>
-<p>以Tab键开头：</p>
-<pre><code>This_is_a_code_bkock()
-</code></pre>
-<p>或者以4个空格开头：</p>
-<pre><code>This_is_a_code_block()
-</code></pre>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">#include&lt;stdio.h&gt;</span><br><span class="line">#define NAME &quot;WuWangwang&quot;</span><br><span class="line">#define ADDR &quot;An Shun, Gui Zhou&quot;</span><br><span class="line"></span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">    printf(&quot;Name: %s\n&quot;,NAME);</span><br><span class="line">    printf(&quot;Address: %s\n&quot;,ADDR);</span><br><span class="line"></span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<pre><code>#include&lt;stdio.h&gt;
-#define NAME &quot;WuWangwang&quot;
-#define ADDR &quot;An Shun, Gui Zhou&quot;
-
-int main()
-&#123;
-    printf(&quot;Name: %s\n&quot;,NAME);
-    printf(&quot;Address: %s\n&quot;,ADDR);
-
-    return 0;
-&#125;
-</code></pre>
-<h2 id="引用"><a class="markdownIt-Anchor" href="#引用"></a> 引用</h2>
-<blockquote>
-<p>我是引用的句子，请在我的前面加上&gt;(大于号)</p>
-</blockquote>
-<p>正常的句子是这样的</p>
-<h3 id="多行引用"><a class="markdownIt-Anchor" href="#多行引用"></a> 多行引用</h3>
-<blockquote>
-<p>这是多行引用的第一行，我的最后有两个空格。<br>
-这是多行引用的第二行</p>
-</blockquote>
-<h3 id="多行引用-2"><a class="markdownIt-Anchor" href="#多行引用-2"></a> 多行引用</h3>
-<blockquote>
-<p>这是多行引用的第一行</p>
-<p>这是多行引用的第二行</p>
-</blockquote>
-<h3 id="引用中嵌套引用"><a class="markdownIt-Anchor" href="#引用中嵌套引用"></a> 引用中嵌套引用</h3>
-<blockquote>
-<p>引用中是可以嵌套引用的</p>
-<blockquote>
-<p>我是引用中嵌套的引用</p>
-</blockquote>
-</blockquote>
-<h3 id="引用中使用其他-markdown-标记"><a class="markdownIt-Anchor" href="#引用中使用其他-markdown-标记"></a> 引用中使用其他 markdown 标记</h3>
-<blockquote>
-<p>来点击查看我的<a href="http://www.weibo.com">微博</a>
-<strong>加粗</strong>和<em>斜体</em>也是支持的。</p>
-</blockquote>
-<h2 id="转义"><a class="markdownIt-Anchor" href="#转义"></a> 转义</h2>
-<p>\
-*
-#
-+
--
-.
-!
-~
-_
-{}
-[]
-()</p>
-<h2 id="扩展语法"><a class="markdownIt-Anchor" href="#扩展语法"></a> 扩展语法</h2>
-<h3 id="删除线"><a class="markdownIt-Anchor" href="#删除线"></a> 删除线</h3>
-<p>这是<s>删除线</s></p>
-<p>这是<s>删除线删除线<br>
-删除线删除线</s></p>
-<h3 id="表情符号"><a class="markdownIt-Anchor" href="#表情符号"></a> 表情符号</h3>
-<p>😄
-😆
-👍
-👎
-👏
-😧
-😙</p>
-<p>更多的表情符号请参考<a href="http://www.webpagefx.com/tools/emoji-cheat-sheet/">http://www.webpagefx.com/tools/emoji-cheat-sheet/</a></p>
-<h3 id="自动链接"><a class="markdownIt-Anchor" href="#自动链接"></a> 自动链接</h3>
-<p>标准语法中由 &lt;&gt; 包裹的 URL 地址被自动识别并解析为超链接。</p>
-<p>如：</p>
-<p><a href="http://www.baidu.com">http://www.baidu.com</a></p>
-<p>使用 GFM 扩展语法可以不使用 &lt;&gt; 包裹</p>
-<p>如：</p>
-<p>www.baidu.com</p>
-<p>http://baidu.com</p>
-<p>http://www.baidu.com</p>
-<h3 id="表格"><a class="markdownIt-Anchor" href="#表格"></a> 表格</h3>
-<h4 id="表格格式"><a class="markdownIt-Anchor" href="#表格格式"></a> 表格格式</h4>
-<table>
-<thead>
-<tr>
-<th>序号</th>
-<th>标题</th>
-<th>网址</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>01</td>
-<td>博客</td>
-<td>http://blog.csdn.net/wirelessqa</td>
-</tr>
-<tr>
-<td>02</td>
-<td>微博</td>
-<td>http://www.weibo.com/wirelessqa</td>
-</tr>
-</tbody>
-</table>
-<h4 id="对齐格式"><a class="markdownIt-Anchor" href="#对齐格式"></a> 对齐格式</h4>
-<table>
-<thead>
-<tr>
-<th style="text-align:left">左对齐</th>
-<th style="text-align:center">居中对齐</th>
-<th style="text-align:right">右对齐</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left">01</td>
-<td style="text-align:center">博客</td>
-<td style="text-align:right">http://blog.csdn.net/wirelessqa</td>
-</tr>
-<tr>
-<td style="text-align:left">02</td>
-<td style="text-align:center">微博</td>
-<td style="text-align:right">http://www.weibo.com/wirelessqa</td>
-</tr>
-</tbody>
-</table>
-<h4 id="表格内使用其他标记"><a class="markdownIt-Anchor" href="#表格内使用其他标记"></a> 表格内使用其他标记</h4>
-<table>
-<thead>
-<tr>
-<th>序号</th>
-<th>标题</th>
-<th>网址</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><em>01</em></td>
-<td><a href="http://blog.csdn.net/wirelessqa">博客</a></td>
-<td>http://blog.csdn.net/wirelessqa</td>
-</tr>
-<tr>
-<td><strong>02</strong></td>
-<td><a href="http://www.weibo.com/wirelessqa">微博</a></td>
-<td>http://www.weibo.com/wirelessqa</td>
-</tr>
-</tbody>
-</table>
-<p>人员列表：</p>
-<table>
-<thead>
-<tr>
-<th>序号</th>
-<th>姓名</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>1</td>
-<td>张三</td>
-</tr>
-<tr>
-<td>2</td>
-<td>李四</td>
-</tr>
-</tbody>
-</table>
-<p>好多熟悉的名字</p>
-<h3 id="任务列表"><a class="markdownIt-Anchor" href="#任务列表"></a> 任务列表</h3>
-<p>今日工作：</p>
-<ul>
-<li>[x] 吃</li>
-<li>[x] 喝</li>
-<li>[ ] 玩</li>
-</ul>
-<p>明日计划：</p>
-<ul>
-<li>[ ] 吃
-<ul>
-<li>[ ] 吃鱼</li>
-<li>[ ] 吃瓜</li>
-</ul>
-</li>
-<li>[x] 睡</li>
-</ul>
-<h3 id="围栏代码块"><a class="markdownIt-Anchor" href="#围栏代码块"></a> 围栏代码块</h3>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">def test_print():</span><br><span class="line">    pass</span><br></pre></td></tr></table></figure>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">test_print</span>():</span><br><span class="line">    <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
-<p>进入C语言代码块：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;Hello world!\n);</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    return 0;</span></span><br><span class="line"><span class="string">&#125;</span></span><br></pre></td></tr></table></figure>
-<p>优秀！</p>
-<h3 id="锚点"><a class="markdownIt-Anchor" href="#锚点"></a> 锚点</h3>
-<p>目录</p>
-<ul>
-<li><a href="#%E5%AF%B9%E9%BD%90%E6%A0%BC%E5%BC%8F">对齐格式</a></li>
-<li><a href="#%E8%A1%A8%E6%A0%BC%E5%86%85%E4%BD%BF%E7%94%A8%E5%85%B6%E4%BB%96%E6%A0%87%E8%AE%B0">表格内使用其他标记</a></li>
-</ul>
-<h3 id="更改字体-大小-颜色"><a class="markdownIt-Anchor" href="#更改字体-大小-颜色"></a> 更改字体、大小、颜色</h3>
-<p><font face="黑体">我是黑体</font></p>
-<p><font face="STCAIYUN">我是华文彩云</font></p>
-<p><font face="微软雅黑">我是微软雅黑</font></p>
-<p><font color=red>我是红色</font></p>
-<p><font color=#008000>我是绿色</font></p>
-<p><font color=Blue>我是蓝色</font></p>
-<p><font size=5>我是尺寸</font></p>
-<p><font face="华文彩云" color=purple size=5>我是华文彩云，蓝色，字号为5</font></p>
-<h3 id="其他"><a class="markdownIt-Anchor" href="#其他"></a> 其他</h3>
-<ul>
-<li>分页</li>
-</ul>
-<p>在需要分页的地方插入以下代码：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;div style=&quot;page-break-after:always;&quot;&gt;&lt;/div&gt;</span><br></pre></td></tr></table></figure>
-<p>分页效果在导出的PDF文件中体现。</p>
-<h3 id="数学公式"><a class="markdownIt-Anchor" href="#数学公式"></a> 数学公式</h3>
-<p>快捷键：Ctrl + M</p>
-<p><span class="katex"><span class="katex-mathml"><math><semantics><mrow><msup><mi>a</mi><mn>2</mn></msup><mo>+</mo><msup><mi>b</mi><mn>2</mn></msup><mo>=</mo><msup><mi>c</mi><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">a^2+b^2=c^2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.897438em;vertical-align:-0.08333em;"></span><span class="mord"><span class="mord mathdefault">a</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.8141079999999999em;vertical-align:0em;"></span><span class="mord"><span class="mord mathdefault">b</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.8141079999999999em;vertical-align:0em;"></span><span class="mord"><span class="mord mathdefault">c</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span></span></p>
-<p><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>y</mi><mo>=</mo><mi>x</mi><mo>+</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">y=x+1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.19444em;"></span><span class="mord mathdefault" style="margin-right:0.03588em;">y</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.66666em;vertical-align:-0.08333em;"></span><span class="mord mathdefault">x</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">1</span></span></span></span></p>
-<h3 id="引用文件"><a class="markdownIt-Anchor" href="#引用文件"></a> 引用文件</h3>
-<blockquote>
-<p>@import &quot;文件名</p>
-</blockquote>
-<blockquote>
-<p>&lt;!-- @import “文件名” --&gt;</p>
-</blockquote>
-<p>以下是文件引用:
-@import “pasteimage.md”</p>
-<p>文件引用到此结束</p>
-<hr>
-<p>@import “https://github.com/kennethreitz/responder/blod/master/README.md”</p>
-<h3 id="引用图片"><a class="markdownIt-Anchor" href="#引用图片"></a> 引用图片</h3>
-<ul>
-<li>
-<p>直接引用图片
-@import “picture/exp11.png”</p>
-</li>
-<li>
-<p>在引用图片的同时设置图片的大小(好像没用。。。尴尬。)
-@import “picture/example.jpg” (width=“10px” height=“20px” title=“哈哈哈” alt=“这是哈哈哈哈哈哈”)</p>
-</li>
-</ul>
-<h3 id="幻灯片"><a class="markdownIt-Anchor" href="#幻灯片"></a> 幻灯片</h3>
-<blockquote>
-<!-- slide -->
-<h1 id="第-1-页"><a class="markdownIt-Anchor" href="#第-1-页"></a> 第 1 页</h1>
-<p>猜猜我是谁？</p>
-<!-- slide -->
-<h1 id="第-2-页"><a class="markdownIt-Anchor" href="#第-2-页"></a> 第 2 页</h1>
-<p><img src="picture/example.jpg" alt="">
-哈哈哈哈哈，我 giao！</p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>测试</category>
-      </categories>
-  </entry>
-  <entry>
     <title>Hello World</title>
     <url>/2022/04/12/4a17b156.html</url>
     <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
@@ -1121,11 +1122,6 @@ _
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
 <p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
 ]]></content>
-  </entry>
-  <entry>
-    <title>时间 标题</title>
-    <url>/2022/04/14/52119671.html</url>
-    <content><![CDATA[]]></content>
   </entry>
   <entry>
     <title>密码</title>
@@ -1148,5 +1144,10 @@ _
       <tags>
         <tag>private</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>时间 标题</title>
+    <url>/2022/04/14/52119671.html</url>
+    <content><![CDATA[]]></content>
   </entry>
 </search>
