@@ -2,6 +2,15 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://chenxin5.gitee.io/2022/08/03/1d8ff3c8.html</loc>
+    
+    <lastmod>2022-08-03</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://chenxin5.gitee.io/2022/08/03/addfcb6b.html</loc>
     
     <lastmod>2022-08-03</lastmod>
@@ -130,7 +139,7 @@
 
   <url>
     <loc>https://chenxin5.gitee.io/</loc>
-    <lastmod>2022-08-03</lastmod>
+    <lastmod>2022-08-04</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
@@ -138,7 +147,7 @@
   
   <url>
     <loc>https://chenxin5.gitee.io/tags/private/</loc>
-    <lastmod>2022-08-03</lastmod>
+    <lastmod>2022-08-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
@@ -147,14 +156,14 @@
   
   <url>
     <loc>https://chenxin5.gitee.io/categories/photos/</loc>
-    <lastmod>2022-08-03</lastmod>
+    <lastmod>2022-08-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://chenxin5.gitee.io/categories/%E6%B5%8B%E8%AF%95/</loc>
-    <lastmod>2022-08-03</lastmod>
+    <lastmod>2022-08-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
