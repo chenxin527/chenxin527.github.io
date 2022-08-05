@@ -28,7 +28,7 @@
 <meta property="og:description" content="正文 总结    正文 今天在使用 hexo generate 命令生成静态文件时遇到了以下错误：">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-08-05T14:52:10.000Z">
-<meta property="article:modified_time" content="2022-08-05T16:47:04.897Z">
+<meta property="article:modified_time" content="2022-08-05T16:52:57.917Z">
 <meta property="article:author" content="沉心">
 <meta name="twitter:card" content="summary">
 
@@ -229,7 +229,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-08-06 00:47:04" itemprop="dateModified" datetime="2022-08-06T00:47:04+08:00">2022-08-06</time>
+                <time title="修改时间：2022-08-06 00:52:57" itemprop="dateModified" datetime="2022-08-06T00:52:57+08:00">2022-08-06</time>
               </span>
 
           <br>
@@ -238,7 +238,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>296</span>
+              <span>310</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -274,7 +274,7 @@
 <figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">FATAL Something<span class="string">&#x27;s wrong. Maybe you can find the solution here: http://hexo.io/docs/troubleshooting.html</span></span><br><span class="line"><span class="string">Template render error: (unknown path)</span></span><br></pre></td></tr></table></figure>
 <p>一种可能的原因是你的文件中存在一些 <strong>不可被识别的字符</strong>，比如不可见的零宽度字符。</p>
 <hr>
-<p>根据官方的提示，通过排除法最终发现出现的问题与以下 $ markdown $ 代码有关：</p>
+<p>根据官方的提示，通过排除法最终发现出现的问题与以下 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>m</mi><mi>a</mi><mi>r</mi><mi>k</mi><mi>d</mi><mi>o</mi><mi>w</mi><mi>n</mi></mrow><annotation encoding="application/x-tex">markdown</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathdefault">m</span><span class="mord mathdefault">a</span><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="mord mathdefault" style="margin-right:0.03148em;">k</span><span class="mord mathdefault">d</span><span class="mord mathdefault">o</span><span class="mord mathdefault" style="margin-right:0.02691em;">w</span><span class="mord mathdefault">n</span></span></span></span> 代码有关：</p>
 <figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">```</span></span><br><span class="line"><span class="section">---</span></span><br></pre></td></tr></table></figure>
 <p>就是这短短两行代码导致了渲染错误。在 <code>```</code> 与 <code>---</code> 两行代码之间增加一个空行后问题得到解决。</p>
 <figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="code">```</span></span><br><span class="line"><span class="code"></span></span><br><span class="line"><span class="code">---</span></span><br></pre></td></tr></table></figure>
