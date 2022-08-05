@@ -2,18 +2,36 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://chenxin5.gitee.io/2022/08/04/a880131b.html</loc>
+    <loc>https://chenxin5.gitee.io/2022/04/12/e8e3b494.html</loc>
     
-    <lastmod>2022-08-04</lastmod>
+    <lastmod>2022-08-05</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>https://chenxin5.gitee.io/2022/04/12/4a17b156.html</loc>
+    <loc>https://chenxin5.gitee.io/2022/08/05/4a17b156.html</loc>
     
-    <lastmod>2022-08-04</lastmod>
+    <lastmod>2022-08-05</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://chenxin5.gitee.io/2022/08/05/da7ded5a.html</loc>
+    
+    <lastmod>2022-08-05</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://chenxin5.gitee.io/2022/08/05/3c79af21.html</loc>
+    
+    <lastmod>2022-08-05</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -23,60 +41,6 @@
     <loc>https://chenxin5.gitee.io/2022/08/03/1d8ff3c8.html</loc>
     
     <lastmod>2022-08-04</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://chenxin5.gitee.io/2022/04/14/19c3ad2f.html</loc>
-    
-    <lastmod>2022-08-04</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://chenxin5.gitee.io/2022/04/12/e8e3b494.html</loc>
-    
-    <lastmod>2022-08-04</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://chenxin5.gitee.io/2022/04/12/551b0348.html</loc>
-    
-    <lastmod>2022-08-03</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://chenxin5.gitee.io/2022/04/14/52119671.html</loc>
-    
-    <lastmod>2022-08-03</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://chenxin5.gitee.io/2022/04/14/5d4e179d.html</loc>
-    
-    <lastmod>2022-08-03</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://chenxin5.gitee.io/2022/04/14/9c470f02.html</loc>
-    
-    <lastmod>2022-08-03</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -130,31 +94,17 @@
 
   <url>
     <loc>https://chenxin5.gitee.io/</loc>
-    <lastmod>2022-08-04</lastmod>
+    <lastmod>2022-08-05</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
 
   
-  <url>
-    <loc>https://chenxin5.gitee.io/tags/private/</loc>
-    <lastmod>2022-08-04</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
 
   
   <url>
-    <loc>https://chenxin5.gitee.io/categories/photos/</loc>
-    <lastmod>2022-08-04</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://chenxin5.gitee.io/categories/%E6%B5%8B%E8%AF%95/</loc>
-    <lastmod>2022-08-04</lastmod>
+    <lastmod>2022-08-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
