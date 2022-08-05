@@ -11,6 +11,7 @@
 </p>
 <h2 id="正文"><a class="markdownIt-Anchor" href="#正文"></a> 正文</h2>
 <p>今天在使用 <code>hexo generate</code> 命令生成静态文件时遇到了以下错误：</p>
+<span id="more"></span>
 <figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">FATAL &#123;</span><br><span class="line">  err: AssertionError [<span class="type">ERR_ASSERTION</span>]: The expression evaluated to a falsy value:</span><br><span class="line"></span><br><span class="line">    assert(cache[<span class="type">index</span>])</span><br><span class="line"></span><br><span class="line">      at D:\myblog\node_modules\hexo\lib\hexo\post.js:<span class="number">43</span>:<span class="number">7</span></span><br><span class="line">      at String.replace (&lt;anonymous&gt;)</span><br><span class="line">      at PostRenderEscape.restoreCodeBlocks (D:\myblog\node_modules\hexo\lib\hexo\post.js:<span class="number">56</span>:<span class="number">16</span>)</span><br><span class="line">      at D:\myblog\node_modules\hexo\lib\hexo\post.js:<span class="number">430</span>:<span class="number">31</span></span><br><span class="line">      at tryCatcher (D:\myblog\node_modules\bluebird\js\release\util.js:<span class="number">16</span>:<span class="number">23</span>)</span><br><span class="line">      at Promise._settlePromiseFromHandler (D:\myblog\node_modules\bluebird\js\release\promise.js:<span class="number">547</span>:<span class="number">31</span>)</span><br><span class="line">      at Promise._settlePromise (D:\myblog\node_modules\bluebird\js\release\promise.js:<span class="number">604</span>:<span class="number">18</span>)</span><br><span class="line">      at Promise._settlePromise0 (D:\myblog\node_modules\bluebird\js\release\promise.js:<span class="number">649</span>:<span class="number">10</span>)</span><br><span class="line">      at Promise._settlePromises (D:\myblog\node_modules\bluebird\js\release\promise.js:<span class="number">729</span>:<span class="number">18</span>)</span><br><span class="line">      at Promise._fulfill (D:\myblog\node_modules\bluebird\js\release\promise.js:<span class="number">673</span>:<span class="number">18</span>)</span><br><span class="line">      at Promise._resolveCallback (D:\myblog\node_modules\bluebird\js\release\promise.js:<span class="number">489</span>:<span class="number">14</span>)</span><br><span class="line">      at Promise._settlePromiseFromHandler (D:\myblog\node_modules\bluebird\js\release\promise.js:<span class="number">559</span>:<span class="number">17</span>)</span><br><span class="line">      at Promise._settlePromise (D:\myblog\node_modules\bluebird\js\release\promise.js:<span class="number">604</span>:<span class="number">18</span>)</span><br><span class="line">      at Promise._settlePromise0 (D:\myblog\node_modules\bluebird\js\release\promise.js:<span class="number">649</span>:<span class="number">10</span>)</span><br><span class="line">      at Promise._settlePromises (D:\myblog\node_modules\bluebird\js\release\promise.js:<span class="number">729</span>:<span class="number">18</span>)</span><br><span class="line">      at Promise._fulfill (D:\myblog\node_modules\bluebird\js\release\promise.js:<span class="number">673</span>:<span class="number">18</span>)</span><br><span class="line">      at Promise._settlePromise (D:\myblog\node_modules\bluebird\js\release\promise.js:<span class="number">617</span>:<span class="number">21</span>)</span><br><span class="line">      at Promise._settlePromise0 (D:\myblog\node_modules\bluebird\js\release\promise.js:<span class="number">649</span>:<span class="number">10</span>)</span><br><span class="line">      at Promise._settlePromises (D:\myblog\node_modules\bluebird\js\release\promise.js:<span class="number">729</span>:<span class="number">18</span>)</span><br><span class="line">      at Promise._fulfill (D:\myblog\node_modules\bluebird\js\release\promise.js:<span class="number">673</span>:<span class="number">18</span>)</span><br><span class="line">      at D:\myblog\node_modules\bluebird\js\release\nodeback.js:<span class="number">42</span>:<span class="number">21</span></span><br><span class="line">      at D:\myblog\node_modules\nunjucks\src\environment.js:<span class="number">41</span>:<span class="number">5</span> &#123;</span><br><span class="line">    generatedMessage: true,</span><br><span class="line">    code: <span class="string">&#x27;ERR_ASSERTION&#x27;</span>,</span><br><span class="line">    actual: null,</span><br><span class="line">    expected: true,</span><br><span class="line">    operator: <span class="string">&#x27;==&#x27;</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125; Something<span class="string">&#x27;s wrong. Maybe you can find the solution here: %s https://hexo.io/docs/troubleshooting.html</span></span><br></pre></td></tr></table></figure>
 <hr>
 <p><a href="https://hexo.io/docs/troubleshooting.html">hexo 官方的解释</a> 是这样的：</p>
@@ -31,6 +32,7 @@
     <title>Hello World</title>
     <url>/2022/08/05/4a17b156.html</url>
     <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<span id="more"></span>
 <h2 id="quick-start"><a class="markdownIt-Anchor" href="#quick-start"></a> Quick Start</h2>
 <h3 id="create-a-new-post"><a class="markdownIt-Anchor" href="#create-a-new-post"></a> Create a new post</h3>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
@@ -51,6 +53,7 @@
     <url>/2022/08/05/3c79af21.html</url>
     <content><![CDATA[<link href="https://lf9-cdn-tos.bytecdntp.com/cdn/expire-1-M/KaTeX/0.10.2/katex.min.css" rel="stylesheet">
 <center><b><big><big>LeetCode 刷题笔记</big></big></b></center>
+<span id="more"></span>
 <h3 id="总目录"><a class="markdownIt-Anchor" href="#总目录"></a> 总目录</h3>
 <p><ul class="markdownIt-TOC">
 <li>
@@ -477,6 +480,7 @@ list2[0]+merge(list1,list2[1:]) &amp; \text{<span class="katex"><span class="kat
     <title>Markdown 学习笔记</title>
     <url>/2022/04/12/e8e3b494.html</url>
     <content><![CDATA[<link href="https://lf9-cdn-tos.bytecdntp.com/cdn/expire-1-M/KaTeX/0.10.2/katex.min.css" rel="stylesheet">
+<span id="more"></span>
 <p><ul class="markdownIt-TOC">
 <li><a href="#%E8%BF%99%E6%98%AF%E4%BA%8C%E7%BA%A7%E6%A0%87%E9%A2%98">这是二级标题</a>
 <ul>
@@ -588,7 +592,6 @@ list2[0]+merge(list1,list2[1:]) &amp; \text{<span class="katex"><span class="kat
 </p>
 <h1 id="这是一级标题"><a class="markdownIt-Anchor" href="#这是一级标题"></a> 这是一级标题</h1>
 <h2 id="这是二级标题"><a class="markdownIt-Anchor" href="#这是二级标题"></a> 这是二级标题</h2>
-<span id="more"></span>
 <h3 id="这是三级标题"><a class="markdownIt-Anchor" href="#这是三级标题"></a> 这是三级标题</h3>
 <h4 id="这是四级标题"><a class="markdownIt-Anchor" href="#这是四级标题"></a> 这是四级标题</h4>
 <h5 id="这是五级标题"><a class="markdownIt-Anchor" href="#这是五级标题"></a> 这是五级标题</h5>
