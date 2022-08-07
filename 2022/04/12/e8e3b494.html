@@ -1,32 +1,1149 @@
-extends includes/layout.pug
 
-block content
-  #post
-    if top_img === false
-      include includes/header/post-info.pug
 
-    article#article-container.post-content!=page.content
-    include includes/post/post-copyright.pug
-    .tag_share
-      if (theme.post_meta.post.tags)
-        .post-meta__tag-list
-          each item, index in page.tags.data
-            a(href=url_for(item.path)).post-meta__tags #[=item.name]
-      include includes/third-party/share/index.pug
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="沉心">
+  <meta name="keywords" content="编程 数据结构 算法 刷题笔记 随笔">
+  
+    <meta property="og:type" content="article">
+<meta property="og:title" content="Markdown 学习笔记">
+<meta property="og:url" content="https://chenxin5.gitee.io/2022/04/12/e8e3b494.html">
+<meta property="og:site_name" content="心轩">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://chenxin5.gitee.io/2022/04/12/e8e3b494/example.jpg">
+<meta property="og:image" content="https://chenxin5.gitee.io/2022/04/12/e8e3b494/example.jpg">
+<meta property="og:image" content="https://chenxin5.gitee.io/2022/04/12/e8e3b494/example.jpg">
+<meta property="article:published_time" content="2022-04-12T14:28:08.000Z">
+<meta property="article:modified_time" content="2022-08-06T16:03:19.052Z">
+<meta property="article:author" content="沉心">
+<meta property="article:tag" content="编程 数据结构 算法 刷题笔记 随笔">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://chenxin5.gitee.io/2022/04/12/e8e3b494/example.jpg">
+  
+  
+  
+  <title>Markdown 学习笔记 - 心轩</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"chenxin5.gitee.io","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.1.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
         
-    if theme.reward.enable && theme.reward.QR_code
-      !=partial('includes/post/reward', {}, {cache: true})
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
 
-    //- ad
-    if theme.ad && theme.ad.post
-      .ads-wrap!=theme.ad.post
+  
 
-    if theme.post_pagination
-      include includes/pagination.pug
-    if theme.related_post && theme.related_post.enable
-      != related_posts(page,site.posts)
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Markdown 学习笔记"></span>
+          
+        </div>
 
-    if page.comments !== false && theme.comments && theme.comments.use
-      - var commentsJsLoad = true
-      !=partial('includes/third-party/comments/index', {}, {cache: true})
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-04-12 22:28" pubdate>
+          2022年4月12日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          3.1k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          26 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
       
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Markdown 学习笔记</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <link href="https://lf9-cdn-tos.bytecdntp.com/cdn/expire-1-M/KaTeX/0.10.2/katex.min.css" rel="stylesheet">
+<span id="more"></span>
+<p><ul class="markdownIt-TOC">
+<li><a href="#%E8%BF%99%E6%98%AF%E4%BA%8C%E7%BA%A7%E6%A0%87%E9%A2%98">这是二级标题</a>
+<ul>
+<li><a href="#%E8%BF%99%E6%98%AF%E4%B8%89%E7%BA%A7%E6%A0%87%E9%A2%98">这是三级标题</a>
+<ul>
+<li><a href="#%E8%BF%99%E6%98%AF%E5%9B%9B%E7%BA%A7%E6%A0%87%E9%A2%98">这是四级标题</a>
+<ul>
+<li><a href="#%E8%BF%99%E6%98%AF%E4%BA%94%E7%BA%A7%E6%A0%87%E9%A2%98">这是五级标题</a>
+<ul>
+<li><a href="#%E8%BF%99%E6%98%AF%E5%85%AD%E7%BA%A7%E6%A0%87%E9%A2%98">这是六级标题</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#%E6%A0%87%E9%A2%981">标题1</a>
+<ul>
+<li><a href="#%E6%A0%87%E9%A2%9811">标题1.1</a></li>
+</ul>
+</li>
+<li><a href="#%E6%A0%87%E9%A2%982">标题2</a>
+<ul>
+<li><a href="#%E6%A0%87%E9%A2%9821">标题2.1</a></li>
+<li><a href="#%E6%A0%87%E9%A2%9822">标题2.2</a></li>
+</ul>
+</li>
+<li><a href="#%E7%B2%97%E4%BD%93">粗体</a></li>
+<li><a href="#%E6%96%9C%E4%BD%93">斜体</a></li>
+<li><a href="#%E6%B2%A1%E6%9C%89%E7%A9%BA%E8%A1%8C">没有空行</a></li>
+<li><a href="#%E6%9C%89%E7%A9%BA%E8%A1%8C">有空行</a></li>
+<li><a href="#%E6%AE%B5%E5%86%85%E6%8D%A2%E8%A1%8C">段内换行</a></li>
+<li><a href="#%E7%A9%BA%E8%A1%8C">空行</a></li>
+<li><a href="#%E6%9C%89%E5%BA%8F%E5%88%97%E8%A1%A8">有序列表</a></li>
+<li><a href="#%E6%97%A0%E5%BA%8F%E5%88%97%E8%A1%A8">无序列表</a>
+<ul>
+<li><a href="#%E4%BD%BF%E7%94%A8%E6%98%9F%E5%8F%B7">使用星号</a></li>
+<li><a href="#%E4%BD%BF%E7%94%A8%E5%8A%A0%E5%8F%B7">使用加号</a></li>
+<li><a href="#%E4%BD%BF%E7%94%A8%E5%87%8F%E5%8F%B7">使用减号</a></li>
+</ul>
+</li>
+<li><a href="#%E5%B5%8C%E5%A5%97%E5%88%97%E8%A1%A8">嵌套列表</a></li>
+<li><a href="#%E6%9C%89%E5%BA%8F%E5%88%97%E8%A1%A8%E4%B8%8E%E6%97%A0%E5%BA%8F%E5%88%97%E8%A1%A8%E7%9B%B8%E4%BA%92%E5%B5%8C%E5%A5%97">有序列表与无序列表相互嵌套</a></li>
+<li><a href="#%E6%8E%A8%E8%8D%90">推荐</a></li>
+<li><a href="#%E4%B8%8D%E6%8E%A8%E8%8D%90">不推荐</a></li>
+<li><a href="#%E6%8E%A8%E8%8D%90-2">推荐</a></li>
+<li><a href="#%E4%B8%8D%E6%8E%A8%E8%8D%90-2">不推荐</a></li>
+<li><a href="#%E5%88%86%E9%9A%94%E7%BA%BF">分隔线</a>
+<ul>
+<li><a href="#%E6%98%9F%E5%8F%B7">星号</a></li>
+<li><a href="#%E5%87%8F%E5%8F%B7">减号</a></li>
+<li><a href="#%E4%B8%8B%E5%88%92%E7%BA%BF">下划线</a></li>
+</ul>
+</li>
+<li><a href="#%E5%9B%BE%E7%89%87">图片</a>
+<ul>
+<li><a href="#%E6%9C%AC%E5%9C%B0%E5%9B%BE%E7%89%87%E6%97%A0%E5%9B%BE%E7%89%87%E6%9B%BF%E4%BB%A3%E6%96%87%E5%AD%97">本地图片:无图片替代文字</a></li>
+<li><a href="#%E6%9C%AC%E5%9C%B0%E5%9B%BE%E7%89%87%E6%9C%89%E5%9B%BE%E7%89%87%E6%9B%BF%E4%BB%A3%E6%96%87%E5%AD%97">本地图片:有图片替代文字</a></li>
+</ul>
+</li>
+<li><a href="#%E9%93%BE%E6%8E%A5">链接</a>
+<ul>
+<li><a href="#%E6%96%87%E5%AD%97%E9%93%BE%E6%8E%A5">文字链接</a></li>
+<li><a href="#%E5%BC%95%E7%94%A8%E9%93%BE%E6%8E%A5">引用链接</a></li>
+<li><a href="#%E7%BD%91%E5%9D%80%E9%93%BE%E6%8E%A5">网址链接</a></li>
+</ul>
+</li>
+<li><a href="#%E8%A1%8C%E5%86%85%E4%BB%A3%E7%A0%81%E4%B8%8E%E4%BB%A3%E7%A0%81%E5%9D%97">行内代码与代码块</a>
+<ul>
+<li><a href="#%E8%A1%8C%E5%86%85%E4%BB%A3%E7%A0%81">行内代码</a></li>
+<li><a href="#%E4%BB%A3%E7%A0%81%E5%9D%97">代码块</a></li>
+</ul>
+</li>
+<li><a href="#%E5%BC%95%E7%94%A8">引用</a>
+<ul>
+<li><a href="#%E5%A4%9A%E8%A1%8C%E5%BC%95%E7%94%A8">多行引用</a></li>
+<li><a href="#%E5%A4%9A%E8%A1%8C%E5%BC%95%E7%94%A8-2">多行引用</a></li>
+<li><a href="#%E5%BC%95%E7%94%A8%E4%B8%AD%E5%B5%8C%E5%A5%97%E5%BC%95%E7%94%A8">引用中嵌套引用</a></li>
+<li><a href="#%E5%BC%95%E7%94%A8%E4%B8%AD%E4%BD%BF%E7%94%A8%E5%85%B6%E4%BB%96-markdown-%E6%A0%87%E8%AE%B0">引用中使用其他 markdown 标记</a></li>
+</ul>
+</li>
+<li><a href="#%E8%BD%AC%E4%B9%89">转义</a></li>
+<li><a href="#%E6%89%A9%E5%B1%95%E8%AF%AD%E6%B3%95">扩展语法</a>
+<ul>
+<li><a href="#%E5%88%A0%E9%99%A4%E7%BA%BF">删除线</a></li>
+<li><a href="#%E8%A1%A8%E6%83%85%E7%AC%A6%E5%8F%B7">表情符号</a></li>
+<li><a href="#%E8%87%AA%E5%8A%A8%E9%93%BE%E6%8E%A5">自动链接</a></li>
+<li><a href="#%E8%A1%A8%E6%A0%BC">表格</a>
+<ul>
+<li><a href="#%E8%A1%A8%E6%A0%BC%E6%A0%BC%E5%BC%8F">表格格式</a></li>
+<li><a href="#%E5%AF%B9%E9%BD%90%E6%A0%BC%E5%BC%8F">对齐格式</a></li>
+<li><a href="#%E8%A1%A8%E6%A0%BC%E5%86%85%E4%BD%BF%E7%94%A8%E5%85%B6%E4%BB%96%E6%A0%87%E8%AE%B0">表格内使用其他标记</a></li>
+</ul>
+</li>
+<li><a href="#%E4%BB%BB%E5%8A%A1%E5%88%97%E8%A1%A8">任务列表</a></li>
+<li><a href="#%E5%9B%B4%E6%A0%8F%E4%BB%A3%E7%A0%81%E5%9D%97">围栏代码块</a></li>
+<li><a href="#%E9%94%9A%E7%82%B9">锚点</a></li>
+<li><a href="#%E6%9B%B4%E6%94%B9%E5%AD%97%E4%BD%93-%E5%A4%A7%E5%B0%8F-%E9%A2%9C%E8%89%B2">更改字体、大小、颜色</a></li>
+<li><a href="#%E5%85%B6%E4%BB%96">其他</a></li>
+<li><a href="#%E6%95%B0%E5%AD%A6%E5%85%AC%E5%BC%8F">数学公式</a></li>
+<li><a href="#%E5%BC%95%E7%94%A8%E6%96%87%E4%BB%B6">引用文件</a></li>
+<li><a href="#%E5%BC%95%E7%94%A8%E5%9B%BE%E7%89%87">引用图片</a></li>
+<li><a href="#%E5%B9%BB%E7%81%AF%E7%89%87">幻灯片</a></li>
+</ul>
+</li>
+</ul>
+</p>
+<h1 id="这是一级标题"><a class="markdownIt-Anchor" href="#这是一级标题"></a> 这是一级标题</h1>
+<h2 id="这是二级标题"><a class="markdownIt-Anchor" href="#这是二级标题"></a> 这是二级标题</h2>
+<h3 id="这是三级标题"><a class="markdownIt-Anchor" href="#这是三级标题"></a> 这是三级标题</h3>
+<h4 id="这是四级标题"><a class="markdownIt-Anchor" href="#这是四级标题"></a> 这是四级标题</h4>
+<h5 id="这是五级标题"><a class="markdownIt-Anchor" href="#这是五级标题"></a> 这是五级标题</h5>
+<h6 id="这是六级标题"><a class="markdownIt-Anchor" href="#这是六级标题"></a> 这是六级标题</h6>
+<h1 id="这也是一级标题"><a class="markdownIt-Anchor" href="#这也是一级标题"></a> 这也是一级标题</h1>
+<p>这也是二级标题(三个减号)</p>
+<h1 id="文档标题"><a class="markdownIt-Anchor" href="#文档标题"></a> 文档标题</h1>
+<p>作者</p>
+<p>摘要</p>
+<p>目录</p>
+<h2 id="标题1"><a class="markdownIt-Anchor" href="#标题1"></a> 标题1</h2>
+<h3 id="标题11"><a class="markdownIt-Anchor" href="#标题11"></a> 标题1.1</h3>
+<h2 id="标题2"><a class="markdownIt-Anchor" href="#标题2"></a> 标题2</h2>
+<h3 id="标题21"><a class="markdownIt-Anchor" href="#标题21"></a> 标题2.1</h3>
+<h3 id="标题22"><a class="markdownIt-Anchor" href="#标题22"></a> 标题2.2</h3>
+<h2 id="粗体"><a class="markdownIt-Anchor" href="#粗体"></a> 粗体</h2>
+<p>我是<strong>粗体</strong></p>
+<p>我也是 <strong>粗体</strong></p>
+<h2 id="斜体"><a class="markdownIt-Anchor" href="#斜体"></a> 斜体</h2>
+<p>我是<em>斜体</em></p>
+<p>我也是 <em>斜体</em></p>
+<h2 id="没有空行"><a class="markdownIt-Anchor" href="#没有空行"></a> 没有空行</h2>
+<p>我是第一行
+我是第二行</p>
+<h2 id="有空行"><a class="markdownIt-Anchor" href="#有空行"></a> 有空行</h2>
+<p>我是第一行</p>
+<p>我是第二行</p>
+<h2 id="段内换行"><a class="markdownIt-Anchor" href="#段内换行"></a> 段内换行</h2>
+<p>我是第一行，如果想段内换行需要在结尾插入两个以上的空格<br>
+我是第二行</p>
+<h2 id="空行"><a class="markdownIt-Anchor" href="#空行"></a> 空行</h2>
+<p>空行符&lt;br&gt;</p>
+<p>大家好，本文参考的是:
+<a target="_blank" rel="noopener" href="https://github.com/google/styleguide/blog/gh-pages/docguide/style.md">Google Markdown Style Guide</a></p>
+<p>大家好，本文参考的是：<a target="_blank" rel="noopener" href="https://github.com/google/styleguide/blog/gh-pages/docguide/style.md">Google Markdown Style Guide</a></p>
+<h2 id="有序列表"><a class="markdownIt-Anchor" href="#有序列表"></a> 有序列表</h2>
+<ol>
+<li>我有一个梦想</li>
+<li>我有两个梦想</li>
+<li>我有三个梦想</li>
+</ol>
+<h2 id="无序列表"><a class="markdownIt-Anchor" href="#无序列表"></a> 无序列表</h2>
+<h3 id="使用星号"><a class="markdownIt-Anchor" href="#使用星号"></a> 使用星号</h3>
+<ul>
+<li>使用【星号】标识无序列表</li>
+<li>使用【星号】标识无序列表</li>
+<li>使用【星号】标识无序列表</li>
+</ul>
+<h3 id="使用加号"><a class="markdownIt-Anchor" href="#使用加号"></a> 使用加号</h3>
+<ul>
+<li>使用【加号】标识无序列表</li>
+<li>使用【加号】标识无序列表</li>
+<li>使用【加号】标识无序列表</li>
+</ul>
+<h3 id="使用减号"><a class="markdownIt-Anchor" href="#使用减号"></a> 使用减号</h3>
+<ul>
+<li>使用【减号】标识无序列表</li>
+<li>使用【减号】标识无序列表</li>
+<li>使用【减号】标识无序列表</li>
+</ul>
+<h2 id="嵌套列表"><a class="markdownIt-Anchor" href="#嵌套列表"></a> 嵌套列表</h2>
+<ul>
+<li>这是第一层列表
+<ul>
+<li>这是第二层列表
+<ul>
+<li>这是第三层列表
+<ul>
+<li>这是第四层列表</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="有序列表与无序列表相互嵌套"><a class="markdownIt-Anchor" href="#有序列表与无序列表相互嵌套"></a> 有序列表与无序列表相互嵌套</h2>
+<ol>
+<li>我是一层列表
+<ul>
+<li>我是二层列表
+<ol>
+<li>我是三层列表</li>
+<li>我也是三层列表</li>
+</ol>
+</li>
+</ul>
+</li>
+</ol>
+<ul>
+<li>
+<p>这个列表项<br>
+有换行</p>
+</li>
+<li>
+<p>这个没有</p>
+</li>
+</ul>
+<ol>
+<li>
+<p>这个有序列表项<br>
+有换行</p>
+</li>
+<li>
+<p>这个没有</p>
+</li>
+</ol>
+<ul>
+<li>抽烟</li>
+<li>喝酒</li>
+<li>烫头</li>
+</ul>
+<h2 id="推荐"><a class="markdownIt-Anchor" href="#推荐"></a> 推荐</h2>
+<ul>
+<li>
+<p>抽很多的<br>
+烟</p>
+</li>
+<li>
+<p>喝酒</p>
+</li>
+<li>
+<p>烫头</p>
+</li>
+</ul>
+<h2 id="不推荐"><a class="markdownIt-Anchor" href="#不推荐"></a> 不推荐</h2>
+<ul>
+<li>抽很多的<br>
+烟</li>
+<li>喝酒</li>
+<li>烫头</li>
+</ul>
+<h2 id="推荐-2"><a class="markdownIt-Anchor" href="#推荐-2"></a> 推荐</h2>
+<p>我的爱好</p>
+<ul>
+<li>抽烟</li>
+<li>喝酒</li>
+<li>烫头</li>
+</ul>
+<p>跟于老师是一样的</p>
+<h2 id="不推荐-2"><a class="markdownIt-Anchor" href="#不推荐-2"></a> 不推荐</h2>
+<p>我的爱好</p>
+<ul>
+<li>抽烟</li>
+<li>喝酒</li>
+<li>烫头
+跟于老师是一样的</li>
+</ul>
+<h2 id="分隔线"><a class="markdownIt-Anchor" href="#分隔线"></a> 分隔线</h2>
+<h3 id="星号"><a class="markdownIt-Anchor" href="#星号"></a> 星号</h3>
+<hr>
+<hr>
+<hr>
+<h3 id="减号"><a class="markdownIt-Anchor" href="#减号"></a> 减号</h3>
+<hr>
+<hr>
+<hr>
+<h3 id="下划线"><a class="markdownIt-Anchor" href="#下划线"></a> 下划线</h3>
+<hr>
+<hr>
+<hr>
+<h2 id="图片"><a class="markdownIt-Anchor" href="#图片"></a> 图片</h2>
+<h3 id="本地图片无图片替代文字"><a class="markdownIt-Anchor" href="#本地图片无图片替代文字"></a> 本地图片:无图片替代文字</h3>
+<p><img src="/2022/04/12/e8e3b494/example.jpg" srcset="/img/loading.gif" lazyload alt></p>
+<h3 id="本地图片有图片替代文字"><a class="markdownIt-Anchor" href="#本地图片有图片替代文字"></a> 本地图片:有图片替代文字</h3>
+<p><img src="/2022/04/12/e8e3b494/example.jpg" srcset="/img/loading.gif" lazyload alt="本地图片"></p>
+<h2 id="链接"><a class="markdownIt-Anchor" href="#链接"></a> 链接</h2>
+<h3 id="文字链接"><a class="markdownIt-Anchor" href="#文字链接"></a> 文字链接</h3>
+<p>在日常工作中我们经常使用的网址有<a target="_blank" rel="noopener" href="https://www.google.com/">Google</a>、<a target="_blank" rel="noopener" href="https://github.com/">Github</a>和<a target="_blank" rel="noopener" href="https://stackoverflow.com/?utm_source=rss&amp;utm_medium=rss">Stack overflow</a></p>
+<h3 id="引用链接"><a class="markdownIt-Anchor" href="#引用链接"></a> 引用链接</h3>
+<p>在日常工作中我们经常使用的网址有<a target="_blank" rel="noopener" href="https://www.google.com/">Google</a>、<a target="_blank" rel="noopener" href="https://github.com/">Github</a>和<a target="_blank" rel="noopener" href="https://stackoverflow.com/?utm_source=rss&amp;utm_medium=rss">Stack overflow</a></p>
+<p>在正文中引用链接标记，可以理解为引用定义好的变量：</p>
+<p><a target="_blank" rel="noopener" href="https://www.google.com/">谷歌官网</a></p>
+<p>在底部定义链接标记，可以理解为定义一个地址变量：</p>
+<h3 id="网址链接"><a class="markdownIt-Anchor" href="#网址链接"></a> 网址链接</h3>
+<p><a target="_blank" rel="noopener" href="https://www.google.com/">https://www.google.com/</a></p>
+<p><a href="mailto:wirelessqa@163.com">wirelessqa@163.com</a></p>
+<h2 id="行内代码与代码块"><a class="markdownIt-Anchor" href="#行内代码与代码块"></a> 行内代码与代码块</h2>
+<h3 id="行内代码"><a class="markdownIt-Anchor" href="#行内代码"></a> 行内代码</h3>
+<p>使用<sub>cd…</sub>命令切换到上一级目录。</p>
+<p>这是一个<sub>行内代码</sub></p>
+<p><sub>行内代码不能有空格</sub></p>
+<h3 id="代码块"><a class="markdownIt-Anchor" href="#代码块"></a> 代码块</h3>
+<p>以Tab键开头：</p>
+<pre><code class="hljs">This_is_a_code_bkock()
+</code></pre>
+<p>或者以4个空格开头：</p>
+<pre><code class="hljs">This_is_a_code_block()
+</code></pre>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><br><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;stdio.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> NAME <span class="hljs-string">&quot;WuWangwang&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ADDR <span class="hljs-string">&quot;An Shun, Gui Zhou&quot;</span></span><br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Name: %s\n&quot;</span>,NAME);<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Address: %s\n&quot;</span>,ADDR);<br><br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<pre><code class="hljs">#include&lt;stdio.h&gt;
+#define NAME &quot;WuWangwang&quot;
+#define ADDR &quot;An Shun, Gui Zhou&quot;
+
+int main()
+&#123;
+    printf(&quot;Name: %s\n&quot;,NAME);
+    printf(&quot;Address: %s\n&quot;,ADDR);
+
+    return 0;
+&#125;
+</code></pre>
+<h2 id="引用"><a class="markdownIt-Anchor" href="#引用"></a> 引用</h2>
+<blockquote>
+<p>我是引用的句子，请在我的前面加上&gt;(大于号)</p>
+</blockquote>
+<p>正常的句子是这样的</p>
+<h3 id="多行引用"><a class="markdownIt-Anchor" href="#多行引用"></a> 多行引用</h3>
+<blockquote>
+<p>这是多行引用的第一行，我的最后有两个空格。<br>
+这是多行引用的第二行</p>
+</blockquote>
+<h3 id="多行引用-2"><a class="markdownIt-Anchor" href="#多行引用-2"></a> 多行引用</h3>
+<blockquote>
+<p>这是多行引用的第一行</p>
+<p>这是多行引用的第二行</p>
+</blockquote>
+<h3 id="引用中嵌套引用"><a class="markdownIt-Anchor" href="#引用中嵌套引用"></a> 引用中嵌套引用</h3>
+<blockquote>
+<p>引用中是可以嵌套引用的</p>
+<blockquote>
+<p>我是引用中嵌套的引用</p>
+</blockquote>
+</blockquote>
+<h3 id="引用中使用其他-markdown-标记"><a class="markdownIt-Anchor" href="#引用中使用其他-markdown-标记"></a> 引用中使用其他 markdown 标记</h3>
+<blockquote>
+<p>来点击查看我的<a target="_blank" rel="noopener" href="http://www.weibo.com">微博</a>
+<strong>加粗</strong>和<em>斜体</em>也是支持的。</p>
+</blockquote>
+<h2 id="转义"><a class="markdownIt-Anchor" href="#转义"></a> 转义</h2>
+<p>\
+*
+#
++
+-
+.
+!
+~
+_
+{}
+[]
+()</p>
+<h2 id="扩展语法"><a class="markdownIt-Anchor" href="#扩展语法"></a> 扩展语法</h2>
+<h3 id="删除线"><a class="markdownIt-Anchor" href="#删除线"></a> 删除线</h3>
+<p>这是<s>删除线</s></p>
+<p>这是<s>删除线删除线<br>
+删除线删除线</s></p>
+<h3 id="表情符号"><a class="markdownIt-Anchor" href="#表情符号"></a> 表情符号</h3>
+<p>😄
+😆
+👍
+👎
+👏
+😧
+😙</p>
+<p>更多的表情符号请参考<a target="_blank" rel="noopener" href="http://www.webpagefx.com/tools/emoji-cheat-sheet/">http://www.webpagefx.com/tools/emoji-cheat-sheet/</a></p>
+<h3 id="自动链接"><a class="markdownIt-Anchor" href="#自动链接"></a> 自动链接</h3>
+<p>标准语法中由 &lt;&gt; 包裹的 URL 地址被自动识别并解析为超链接。</p>
+<p>如：</p>
+<p><a target="_blank" rel="noopener" href="http://www.baidu.com">http://www.baidu.com</a></p>
+<p>使用 GFM 扩展语法可以不使用 &lt;&gt; 包裹</p>
+<p>如：</p>
+<p>www.baidu.com</p>
+<p>http://baidu.com</p>
+<p>http://www.baidu.com</p>
+<h3 id="表格"><a class="markdownIt-Anchor" href="#表格"></a> 表格</h3>
+<h4 id="表格格式"><a class="markdownIt-Anchor" href="#表格格式"></a> 表格格式</h4>
+<table>
+<thead>
+<tr>
+<th>序号</th>
+<th>标题</th>
+<th>网址</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>01</td>
+<td>博客</td>
+<td>http://blog.csdn.net/wirelessqa</td>
+</tr>
+<tr>
+<td>02</td>
+<td>微博</td>
+<td>http://www.weibo.com/wirelessqa</td>
+</tr>
+</tbody>
+</table>
+<h4 id="对齐格式"><a class="markdownIt-Anchor" href="#对齐格式"></a> 对齐格式</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">左对齐</th>
+<th style="text-align:center">居中对齐</th>
+<th style="text-align:right">右对齐</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">01</td>
+<td style="text-align:center">博客</td>
+<td style="text-align:right">http://blog.csdn.net/wirelessqa</td>
+</tr>
+<tr>
+<td style="text-align:left">02</td>
+<td style="text-align:center">微博</td>
+<td style="text-align:right">http://www.weibo.com/wirelessqa</td>
+</tr>
+</tbody>
+</table>
+<h4 id="表格内使用其他标记"><a class="markdownIt-Anchor" href="#表格内使用其他标记"></a> 表格内使用其他标记</h4>
+<table>
+<thead>
+<tr>
+<th>序号</th>
+<th>标题</th>
+<th>网址</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><em>01</em></td>
+<td><a target="_blank" rel="noopener" href="http://blog.csdn.net/wirelessqa">博客</a></td>
+<td>http://blog.csdn.net/wirelessqa</td>
+</tr>
+<tr>
+<td><strong>02</strong></td>
+<td><a target="_blank" rel="noopener" href="http://www.weibo.com/wirelessqa">微博</a></td>
+<td>http://www.weibo.com/wirelessqa</td>
+</tr>
+</tbody>
+</table>
+<p>人员列表：</p>
+<table>
+<thead>
+<tr>
+<th>序号</th>
+<th>姓名</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>张三</td>
+</tr>
+<tr>
+<td>2</td>
+<td>李四</td>
+</tr>
+</tbody>
+</table>
+<p>好多熟悉的名字</p>
+<h3 id="任务列表"><a class="markdownIt-Anchor" href="#任务列表"></a> 任务列表</h3>
+<p>今日工作：</p>
+<ul>
+<li>[x] 吃</li>
+<li>[x] 喝</li>
+<li>[ ] 玩</li>
+</ul>
+<p>明日计划：</p>
+<ul>
+<li>[ ] 吃
+<ul>
+<li>[ ] 吃鱼</li>
+<li>[ ] 吃瓜</li>
+</ul>
+</li>
+<li>[x] 睡</li>
+</ul>
+<h3 id="围栏代码块"><a class="markdownIt-Anchor" href="#围栏代码块"></a> 围栏代码块</h3>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs ruby"><span class="hljs-keyword">def</span> <span class="hljs-title function_">test_print</span>():<br>    pass<br></code></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">test_print</span>():<br>    <span class="hljs-keyword">pass</span><br></code></pre></td></tr></table></figure>
+<p>进入C语言代码块：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">int</span> <span class="hljs-title function_">main</span><span class="hljs-params">()</span><br>&#123;<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Hello world!\n&quot;</span>);<br><br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>优秀！</p>
+<h3 id="锚点"><a class="markdownIt-Anchor" href="#锚点"></a> 锚点</h3>
+<p>目录</p>
+<ul>
+<li><a href="#%E5%AF%B9%E9%BD%90%E6%A0%BC%E5%BC%8F">对齐格式</a></li>
+<li><a href="#%E8%A1%A8%E6%A0%BC%E5%86%85%E4%BD%BF%E7%94%A8%E5%85%B6%E4%BB%96%E6%A0%87%E8%AE%B0">表格内使用其他标记</a></li>
+</ul>
+<h3 id="更改字体-大小-颜色"><a class="markdownIt-Anchor" href="#更改字体-大小-颜色"></a> 更改字体、大小、颜色</h3>
+<p><font face="黑体">我是黑体</font></p>
+<p><font face="STCAIYUN">我是华文彩云</font></p>
+<p><font face="微软雅黑">我是微软雅黑</font></p>
+<p><font color="red">我是红色</font></p>
+<p><font color="#008000">我是绿色</font></p>
+<p><font color="Blue">我是蓝色</font></p>
+<p><font size="5">我是尺寸</font></p>
+<p><font face="华文彩云" color="purple" size="5">我是华文彩云，蓝色，字号为5</font></p>
+<h3 id="其他"><a class="markdownIt-Anchor" href="#其他"></a> 其他</h3>
+<ul>
+<li>分页</li>
+</ul>
+<p>在需要分页的地方插入以下代码：</p>
+<figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs applescript">&lt;<span class="hljs-keyword">div</span> style=<span class="hljs-string">&quot;page-break-after:always;&quot;</span>&gt;&lt;/<span class="hljs-keyword">div</span>&gt;<br></code></pre></td></tr></table></figure>
+<p>分页效果在导出的PDF文件中体现。</p>
+<h3 id="数学公式"><a class="markdownIt-Anchor" href="#数学公式"></a> 数学公式</h3>
+<p>快捷键：Ctrl + M</p>
+<p><span class="katex"><span class="katex-mathml"><math><semantics><mrow><msup><mi>a</mi><mn>2</mn></msup><mo>+</mo><msup><mi>b</mi><mn>2</mn></msup><mo>=</mo><msup><mi>c</mi><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">a^2+b^2=c^2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.897438em;vertical-align:-0.08333em;"></span><span class="mord"><span class="mord mathdefault">a</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.8141079999999999em;vertical-align:0em;"></span><span class="mord"><span class="mord mathdefault">b</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.8141079999999999em;vertical-align:0em;"></span><span class="mord"><span class="mord mathdefault">c</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span></span></p>
+<p><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>y</mi><mo>=</mo><mi>x</mi><mo>+</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">y=x+1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.19444em;"></span><span class="mord mathdefault" style="margin-right:0.03588em;">y</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.66666em;vertical-align:-0.08333em;"></span><span class="mord mathdefault">x</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">1</span></span></span></span></p>
+<h3 id="引用文件"><a class="markdownIt-Anchor" href="#引用文件"></a> 引用文件</h3>
+<blockquote>
+<p>@import &quot;文件名</p>
+</blockquote>
+<blockquote>
+<p>&lt;!-- @import “文件名” --&gt;</p>
+</blockquote>
+<p>以下是文件引用:
+@import “pasteimage.md”</p>
+<p>文件引用到此结束</p>
+<hr>
+<p>@import “https://github.com/kennethreitz/responder/blod/master/README.md”</p>
+<h3 id="引用图片"><a class="markdownIt-Anchor" href="#引用图片"></a> 引用图片</h3>
+<ul>
+<li>
+<p>直接引用图片
+@import “picture/exp11.png”</p>
+</li>
+<li>
+<p>在引用图片的同时设置图片的大小(好像没用。。。尴尬。)
+@import “picture/example.jpg” (width=“10px” height=“20px” title=“哈哈哈” alt=“这是哈哈哈哈哈哈”)</p>
+</li>
+</ul>
+<h3 id="幻灯片"><a class="markdownIt-Anchor" href="#幻灯片"></a> 幻灯片</h3>
+<blockquote>
+<!-- slide -->
+<h1 id="第-1-页"><a class="markdownIt-Anchor" href="#第-1-页"></a> 第 1 页</h1>
+<p>猜猜我是谁？</p>
+<!-- slide -->
+<h1 id="第-2-页"><a class="markdownIt-Anchor" href="#第-2-页"></a> 第 2 页</h1>
+<p><img src="/2022/04/12/e8e3b494/example.jpg" srcset="/img/loading.gif" lazyload alt>
+哈哈哈哈哈，我 giao！</p>
+</blockquote>
+<center><font face="黑体" color="black" size="4">----------------- END -----------------</font></center>
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/markdown/" class="category-chain-item">markdown</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Markdown 学习笔记</div>
+      <div>https://chenxin5.gitee.io/2022/04/12/e8e3b494.html</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>沉心</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2022年4月12日</div>
+        </div>
+      
+      
+      <div class="license-meta-item">
+        <div>许可协议</div>
+        <div>
+          
+            
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+              <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                <i class="iconfont icon-by"></i>
+              </span>
+              </a>
+            
+          
+        </div>
+      </div>
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022/08/03/1d8ff3c8.html" title="Markdown 学习笔记第二版">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Markdown 学习笔记第二版</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
+    });
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
