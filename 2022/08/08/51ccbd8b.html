@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.1.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"chenxin5.gitee.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="使用指向已经被释放了的内存的指针，这样的用法是否正确呢？">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C语言调用 free 函数释放内存后指针指向的问题">
+<meta property="og:url" content="https://chenxin5.gitee.io/2022/08/08/51ccbd8b.html">
+<meta property="og:site_name" content="心轩">
+<meta property="og:description" content="使用指向已经被释放了的内存的指针，这样的用法是否正确呢？">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://chenxin5.gitee.io/2022/08/08/51ccbd8b/VS%E8%BF%90%E8%A1%8C%E6%83%85%E5%86%B51.jpg">
+<meta property="og:image" content="https://chenxin5.gitee.io/2022/08/08/51ccbd8b/VS%E8%BF%90%E8%A1%8C%E6%83%85%E5%86%B52.jpg">
+<meta property="og:image" content="https://chenxin5.gitee.io/2022/08/08/51ccbd8b/VS%E8%BF%90%E8%A1%8C%E6%83%85%E5%86%B53.jpg">
+<meta property="og:image" content="https://chenxin5.gitee.io/2022/08/08/51ccbd8b/list1.jpg">
+<meta property="og:image" content="https://chenxin5.gitee.io/2022/08/08/51ccbd8b/list2.jpg">
+<meta property="og:image" content="https://chenxin5.gitee.io/2022/08/08/51ccbd8b/list3.jpg">
+<meta property="og:image" content="https://chenxin5.gitee.io/2022/08/08/51ccbd8b/list5.jpg">
+<meta property="og:image" content="https://chenxin5.gitee.io/2022/08/08/51ccbd8b/list6.jpg">
+<meta property="og:image" content="https://chenxin5.gitee.io/2022/08/08/51ccbd8b/list7.jpg">
+<meta property="og:image" content="https://chenxin5.gitee.io/2022/08/08/51ccbd8b/list8.jpg">
+<meta property="og:image" content="https://chenxin5.gitee.io/2022/08/08/51ccbd8b/list9.jpg">
+<meta property="og:image" content="https://chenxin5.gitee.io/2022/08/08/51ccbd8b/list10.jpg">
+<meta property="og:image" content="https://chenxin5.gitee.io/2022/08/08/51ccbd8b/%E7%A8%8B%E5%BA%8F%E6%BC%8F%E6%B4%9E%E6%B5%8B%E8%AF%95%E7%BB%93%E6%9E%9C1.jpg">
+<meta property="og:image" content="https://chenxin5.gitee.io/2022/08/08/51ccbd8b/%E7%A8%8B%E5%BA%8F%E6%BC%8F%E6%B4%9E%E6%B5%8B%E8%AF%95%E7%BB%93%E6%9E%9C2.jpg">
+<meta property="og:image" content="https://chenxin5.gitee.io/2022/08/08/51ccbd8b/%E4%BD%BF%E7%94%A8%E6%8C%87%E5%90%91free%E5%90%8E%E5%86%85%E5%AD%98%E7%9A%84%E6%8C%87%E9%92%88.jpg">
+<meta property="og:image" content="https://chenxin5.gitee.io/2022/08/08/51ccbd8b/%E4%BD%BF%E7%94%A8%E6%8C%87%E5%90%91free%E5%90%8E%E5%86%85%E5%AD%98%E7%9A%84%E6%8C%87%E9%92%881.jpg">
+<meta property="article:published_time" content="2022-08-08T02:35:56.000Z">
+<meta property="article:modified_time" content="2022-08-08T16:52:03.796Z">
+<meta property="article:author" content="沉心">
+<meta property="article:tag" content="编程">
+<meta property="article:tag" content="C&#x2F;C++">
+<meta property="article:tag" content="链表">
+<meta property="article:tag" content="多项式">
+<meta property="article:tag" content="free 函数">
+<meta property="article:tag" content="动态内存分配">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://chenxin5.gitee.io/2022/08/08/51ccbd8b/VS%E8%BF%90%E8%A1%8C%E6%83%85%E5%86%B51.jpg">
+
+<link rel="canonical" href="https://chenxin5.gitee.io/2022/08/08/51ccbd8b.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>C语言调用 free 函数释放内存后指针指向的问题 | 心轩</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">心轩</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">沉心的个人博客</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+  <a href="https://github.com/chenxin527" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://chenxin5.gitee.io/2022/08/08/51ccbd8b.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="沉心">
+      <meta itemprop="description" content="Later equals never.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="心轩">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          C语言调用 free 函数释放内存后指针指向的问题
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-08-08 10:35:56" itemprop="dateCreated datePublished" datetime="2022-08-08T10:35:56+08:00">2022-08-08</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-08-09 00:52:03" itemprop="dateModified" datetime="2022-08-09T00:52:03+08:00">2022-08-09</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%BC%96%E7%A8%8B%E6%9C%AD%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">编程札记</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%BC%96%E7%A8%8B%E6%9C%AD%E8%AE%B0/C-C/" itemprop="url" rel="index"><span itemprop="name">C/C++</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>2.1k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>4 分钟</span>
+            </span>
+            <div class="post-description"><center>使用指向已经被释放了的内存的指针，这样的用法是否正确呢？</center></div>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <link href="https://lf9-cdn-tos.bytecdntp.com/cdn/expire-1-M/KaTeX/0.10.2/katex.min.css" rel="stylesheet">
+<span id="more"></span>
+<h1 id="1-前言"><a class="markdownIt-Anchor" href="#1-前言"></a> 1. 前言</h1>
+<p>上机时遇到如下 C++ 代码 ( C 代码)：</p>
+<figure class="highlight c++"><figcaption><span>删除带头结点的多项式单链表中系数为 0 项</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">DelZero</span><span class="params">(PolyNode *&amp;L)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    PolyNode *pre = L, *p = pre-&gt;next;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> (p != <span class="literal">NULL</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (p-&gt;coef == <span class="number">0.0</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            pre-&gt;next = p-&gt;next;</span><br><span class="line">            <span class="built_in">free</span>(p);</span><br><span class="line">        &#125;</span><br><span class="line">        pre = p;</span><br><span class="line">        p = p-&gt;next;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">来源：《数据结构教程 (第 <span class="number">5</span> 版) 上机实验指导》(李春葆主编) 第二章实验题 <span class="number">10</span></span><br></pre></td></tr></table></figure>
+<p>当 <code>if</code> 语句执行后，指针 <code>p</code> 指向的内存已经被释放，接着又执行 <code>p = p-&gt;next</code>，使用了指向已经被释放了的内存的指针。那么，这样的用法是否正确呢？</p>
+<h1 id="2-正文"><a class="markdownIt-Anchor" href="#2-正文"></a> 2. 正文</h1>
+<p><code>free(p)</code> 后 <code>p = p-&gt;next</code> 能否正确执行，要看编译器的具体实现，不同的编译器可能会产生不同的结果。上述程序我在 <strong>VSCode</strong> 中使用 <strong>gcc</strong> 编译能正常运行，但使用 <strong>VS2022</strong> 的 <strong>MSVC</strong> 编译后不能正常运行。而且即便能够正常运行，这种用法也会导致程序出现漏洞。</p>
+<h2 id="21-分配-与-释放"><a class="markdownIt-Anchor" href="#21-分配-与-释放"></a> 2.1. “分配” 与 “释放”</h2>
+<p>在调用内存分配函数 (<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>m</mi><mi>a</mi><mi>l</mi><mi>l</mi><mi>o</mi><mi>c</mi><mi mathvariant="normal">、</mi><mi>c</mi><mi>a</mi><mi>l</mi><mi>l</mi><mi>o</mi><mi>c</mi></mrow><annotation encoding="application/x-tex">malloc、calloc</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathdefault">m</span><span class="mord mathdefault">a</span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="mord mathdefault">o</span><span class="mord mathdefault">c</span><span class="mord cjk_fallback">、</span><span class="mord mathdefault">c</span><span class="mord mathdefault">a</span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="mord mathdefault">o</span><span class="mord mathdefault">c</span></span></span></span> 等) 在堆区分配一块内存后，这块内存会被标记为 <strong>已使用</strong>，确保在之后的内存分配中不会将这块已经分配过的内存进行二次分配。</p>
+<p>而调用 <code>free</code> 函数将内存释放后，这块内存便会被标记为 <strong>未使用</strong>，在往后的内存分配中这块内存便能再次被分配了。而 <code>free</code> 后内存中的值是否改变这要看编译器的具体实现，不同编译器可能具有不同的实现方式。</p>
+<h2 id="22-运行测试"><a class="markdownIt-Anchor" href="#22-运行测试"></a> 2.2. 运行测试</h2>
+<h3 id="221-vscode-下使用-gcc-编译"><a class="markdownIt-Anchor" href="#221-vscode-下使用-gcc-编译"></a> 2.2.1. VSCode 下使用 gcc 编译</h3>
+<p>在调用 <code>free</code> 函数释放动态分配的内存后，指针 <code>p</code> 仍然指向这块已经被释放的内存 (指针变量 <code>p</code> 中仍然保存着这块内存的地址)，而使用 <strong>gcc</strong> 进行编译，被释放的内存中原有的内容并未被覆盖 (前言中给出的代码对应的程序是这样，一会儿会举个反例)，执行 <code>p = p-&gt;next</code> 后 <code>p</code> 指向单链表的下一个结点，因此程序能正常运行而不会错误中止。虽然能正常运行，但程序存在漏洞。</p>
+<p>参见 <a href="#23-%E7%A8%8B%E5%BA%8F%E6%BC%8F%E6%B4%9E%E6%B5%8B%E8%AF%95">2.3 程序漏洞测试</a></p>
+<h3 id="222-vs2022-下使用-msvc-编译"><a class="markdownIt-Anchor" href="#222-vs2022-下使用-msvc-编译"></a> 2.2.2. VS2022 下使用 MSVC 编译</h3>
+<p>在 <strong>VS2022</strong> 下使用 <strong>MSVC</strong> 进行编译，第一次执行 <code>free(p)</code> 前 <code>p</code> 指向的内存中的内容如下：</p>
+<p><img src="/2022/08/08/51ccbd8b/VS%E8%BF%90%E8%A1%8C%E6%83%85%E5%86%B51.jpg" alt="VS1"></p>
+<p>第一次执行 <code>free(p)</code> 后，<code>p</code> 指向的内存中的内容被覆盖 (红色部分)，这时再执行 <code>p = p-&gt;next</code> 便会产生错误，使程序卡死在这一步。</p>
+<p><img src="/2022/08/08/51ccbd8b/VS%E8%BF%90%E8%A1%8C%E6%83%85%E5%86%B52.jpg" alt="VS2"></p>
+<p><img src="/2022/08/08/51ccbd8b/VS%E8%BF%90%E8%A1%8C%E6%83%85%E5%86%B53.jpg" alt="VS3"></p>
+<h2 id="23-程序漏洞测试"><a class="markdownIt-Anchor" href="#23-程序漏洞测试"></a> 2.3. 程序漏洞测试</h2>
+<p>我们举一个例子来说明在能正常运行的前提下 (<strong>gcc</strong> 编译)，前言中的程序存在的漏洞。</p>
+<ol>
+<li>根据多项式 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><msup><mi>x</mi><mn>9</mn></msup><mo>+</mo><mn>0</mn><msup><mi>x</mi><mn>5</mn></msup><mo>+</mo><mn>0</mn><msup><mi>x</mi><mn>3</mn></msup><mo>+</mo><mn>3</mn><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>0</mn><mi>x</mi></mrow><annotation encoding="application/x-tex">x^9 + 0x^5 + 0x^3 + 3x^2 + 0x</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.897438em;vertical-align:-0.08333em;"></span><span class="mord"><span class="mord mathdefault">x</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">9</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.897438em;vertical-align:-0.08333em;"></span><span class="mord">0</span><span class="mord"><span class="mord mathdefault">x</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">5</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.897438em;vertical-align:-0.08333em;"></span><span class="mord">0</span><span class="mord"><span class="mord mathdefault">x</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">3</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.897438em;vertical-align:-0.08333em;"></span><span class="mord">3</span><span class="mord"><span class="mord mathdefault">x</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">0</span><span class="mord mathdefault">x</span></span></span></span> 创建一个多项式单链表 (如下, 这里为了方便只写出系数)。</li>
+</ol>
+<p><img src="/2022/08/08/51ccbd8b/list1.jpg" alt="list1"></p>
+<ol start="2">
+<li><code>pre</code> 和 <code>p</code> 初始指向如图。</li>
+</ol>
+<p><img src="/2022/08/08/51ccbd8b/list2.jpg" alt="list2"></p>
+<ol start="3">
+<li>此时 <code>p != NULL</code>，进行第 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>1</mn></mrow><annotation encoding="application/x-tex">1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">1</span></span></span></span> 次循环，<code>p-&gt;coef == 1</code>，两指针向后移。</li>
+</ol>
+<p><img src="/2022/08/08/51ccbd8b/list3.jpg" alt="list3"></p>
+<ol start="4">
+<li>此时 <code>p != NULL</code>，进行第 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>2</mn></mrow><annotation encoding="application/x-tex">2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">2</span></span></span></span> 次循环，<code>p-&gt;coef == 0</code>, 删除 <code>p</code> 指向的结点后两指针向后移。整理一下这一步得到的单链表。</li>
+</ol>
+<p><img src="/2022/08/08/51ccbd8b/list5.jpg" alt="list5"></p>
+<p><img src="/2022/08/08/51ccbd8b/list6.jpg" alt="list6"></p>
+<ol start="5">
+<li>此时 <code>p != NULL</code>，进行第 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>3</mn></mrow><annotation encoding="application/x-tex">3</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">3</span></span></span></span> 次循环，<code>p-&gt;coef == 0</code>, 这时本应删除 <code>p</code> 指向的结点后两指针向后移，但此时 <code>pre</code> 指针指向的是已经被释放的结点，<code>pre-&gt;next = p-&gt;next</code> 改变的是已释放结点的 <code>next</code> 域指向，从而导致 <strong>漏删</strong> 了一个本应删除的结点。</li>
+</ol>
+<p><img src="/2022/08/08/51ccbd8b/list7.jpg" alt="list7"></p>
+<ol start="6">
+<li>此时 <code>p != NULL</code>，进行第 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>4</mn></mrow><annotation encoding="application/x-tex">4</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">4</span></span></span></span> 次循环，<code>p-&gt;coef != 0</code>, 两指针向后移。</li>
+</ol>
+<p><img src="/2022/08/08/51ccbd8b/list8.jpg" alt="list8"></p>
+<ol start="7">
+<li>此时 <code>p != NULL</code>，进行第 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>5</mn></mrow><annotation encoding="application/x-tex">5</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">5</span></span></span></span> 次循环，<code>p-&gt;coef == 0</code>, 删除 <code>p</code> 指向的结点后两指针向后移。</li>
+</ol>
+<p><img src="/2022/08/08/51ccbd8b/list9.jpg" alt="list9"></p>
+<ol start="8">
+<li>此时 <code>p == NULL</code>，循环结束，最终得到的单链表如图。</li>
+</ol>
+<p><img src="/2022/08/08/51ccbd8b/list10.jpg" alt="list10"></p>
+<br>
+<p>测试代码如下，这里打印出 <code>free(p)</code> 执行前后指针变量 <code>p</code> 中内容以及 <code>p</code> 指向的内存中的内容。</p>
+<figure class="highlight c++"><figcaption><span>程序漏洞测试代码 (仅列出与漏洞有关代码)</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">DelZero</span><span class="params">(PolyNode *&amp;L)</span>  <span class="comment">//删除系数为零的项</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    PolyNode *pre = L, *p = pre-&gt;next;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> (p != <span class="literal">NULL</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (p-&gt;coef == <span class="number">0.0</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            pre-&gt;next = p-&gt;next;</span><br><span class="line"></span><br><span class="line">            <span class="meta">#<span class="keyword">ifdef</span> DEBUG</span></span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot;free(p) 前, p = %p, p-&gt;coef = %f, &quot;</span></span><br><span class="line">                   <span class="string">&quot;p-&gt;exp = %d, p-&gt;next = %p\n&quot;</span>, p, p-&gt;coef, p-&gt;exp, p-&gt;next);</span><br><span class="line">            <span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line">            <span class="built_in">free</span>(p);</span><br><span class="line">            <span class="meta">#<span class="keyword">ifdef</span> DEBUG</span></span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot;free(p) 后, p = %p, p-&gt;coef = %f, &quot;</span></span><br><span class="line">                   <span class="string">&quot;p-&gt;exp = %d, p-&gt;next = %p\n\n&quot;</span>, p, p-&gt;coef, p-&gt;exp, p-&gt;next);</span><br><span class="line">            <span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line">            p = pre-&gt;next;</span><br><span class="line">            <span class="keyword">continue</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        pre = p;</span><br><span class="line">        p = p-&gt;next;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    PolyArray a[] = &#123;&#123;<span class="number">1</span>, <span class="number">9</span>&#125;, &#123;<span class="number">0</span>, <span class="number">5</span>&#125;, &#123;<span class="number">0</span>, <span class="number">3</span>&#125;, &#123;<span class="number">3</span>, <span class="number">2</span>&#125;, &#123;<span class="number">0</span>, <span class="number">1</span>&#125;&#125;;</span><br><span class="line">    PolyNode *L;</span><br><span class="line">    <span class="type">int</span> n = <span class="number">5</span>;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">CreatePolyR</span>(L, a, <span class="number">5</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;原多项式为: &quot;</span>);</span><br><span class="line">    <span class="built_in">DispPoly</span>(L);</span><br><span class="line"></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;删除系数为 0 项后为: \n\n&quot;</span>);</span><br><span class="line">    <span class="built_in">DelZero</span>(L);</span><br><span class="line">    <span class="built_in">DispPoly</span>(L);</span><br><span class="line"></span><br><span class="line">    <span class="built_in">DestroyPoly</span>(L);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>执行结果如图所示：</p>
+<p><img src="/2022/08/08/51ccbd8b/%E7%A8%8B%E5%BA%8F%E6%BC%8F%E6%B4%9E%E6%B5%8B%E8%AF%95%E7%BB%93%E6%9E%9C1.jpg" alt="result1"></p>
+<p>可以看到，<code>free(p)</code> 操作执行前后，指针变量 <code>p</code> 中内容以及 <code>p</code> 指向的内存中的内容均未发生改变，所以在 <code>free(p)</code> 后执行 <code>p = p-&gt;next</code> 编译器并不会报错，但却给程序带来了逻辑上的漏洞。</p>
+<h2 id="24-程序漏洞修复"><a class="markdownIt-Anchor" href="#24-程序漏洞修复"></a> 2.4. 程序漏洞修复</h2>
+<figure class="highlight diff"><figcaption><span>删除带头结点的多项式单链表中系数为 0 项 (Beta)</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">void DelZero(PolyNode *&amp;L)</span><br><span class="line">&#123;</span><br><span class="line">    PolyNode *pre = L, *p = pre-&gt;next;</span><br><span class="line"></span><br><span class="line">    while (p != NULL)</span><br><span class="line">    &#123;</span><br><span class="line">        if (p-&gt;coef == 0.0)</span><br><span class="line">        &#123;</span><br><span class="line">            pre-&gt;next = p-&gt;next;</span><br><span class="line">            free(p);</span><br><span class="line"><span class="addition">+           p = pre-&gt;next;</span></span><br><span class="line"><span class="addition">+           continue;</span></span><br><span class="line">        &#125;</span><br><span class="line">        pre = p;</span><br><span class="line">        p = p-&gt;next;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>漏洞修复后运行结果如图：</p>
+<p><img src="/2022/08/08/51ccbd8b/%E7%A8%8B%E5%BA%8F%E6%BC%8F%E6%B4%9E%E6%B5%8B%E8%AF%95%E7%BB%93%E6%9E%9C2.jpg" alt="result2"></p>
+<h2 id="25-附加测试"><a class="markdownIt-Anchor" href="#25-附加测试"></a> 2.5. 附加测试</h2>
+<p>在 <strong>VSCode</strong> 下使用 <strong>gcc</strong> 编译以下 C 代码：</p>
+<figure class="highlight c"><figcaption><span>测试 1</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;malloc.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> *p = (<span class="type">int</span> *) <span class="built_in">malloc</span> (<span class="keyword">sizeof</span>(<span class="type">int</span>));</span><br><span class="line"></span><br><span class="line">    *p = <span class="number">9</span>;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;p = %p\n&quot;</span>, p);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;free(p) 前 *p = %d\n&quot;</span>, *p);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;-----------------\n&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="built_in">free</span>(p);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;p = %p\n&quot;</span>, p);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;free(p) 后 *p = %d\n&quot;</span>, *p); </span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;------------------------\n&quot;</span>);</span><br><span class="line">    </span><br><span class="line">    *p = <span class="number">9</span>;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;p = %p\n&quot;</span>, p);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;free(p) 后再执行 *p = 9, 此时 *p = %d\n\n&quot;</span>, *p);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行结果如下：</p>
+<p><img src="/2022/08/08/51ccbd8b/%E4%BD%BF%E7%94%A8%E6%8C%87%E5%90%91free%E5%90%8E%E5%86%85%E5%AD%98%E7%9A%84%E6%8C%87%E9%92%88.jpg" alt></p>
+<figure class="highlight c"><figcaption><span>测试 2</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;malloc.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">char</span> *q = (<span class="type">char</span> *) <span class="built_in">malloc</span> (<span class="number">20</span> * <span class="keyword">sizeof</span>(<span class="type">char</span>));</span><br><span class="line"></span><br><span class="line">    q = <span class="string">&quot;Hello World&quot;</span>;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;q = %p\n&quot;</span>, q);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;free(q) 前 q 指向内存中的内容为: %s\n&quot;</span>, q);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;--------------------------------------------\n&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="built_in">free</span>(q);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;q = %p\n&quot;</span>, q);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;free(q) 后 q 指向内存中的内容为: %s\n&quot;</span>, q); </span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;--------------------------------------------\n&quot;</span>);</span><br><span class="line"></span><br><span class="line">    q = <span class="string">&quot;Hello World&quot;</span>;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;q = %p\n&quot;</span>, q);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;free(q) 后再执行 q = \&quot;Hello World\&quot;, 此时 q 指向内存中的内容为: %s\n\n&quot;</span>, q);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行结果如下：</p>
+<p><img src="/2022/08/08/51ccbd8b/%E4%BD%BF%E7%94%A8%E6%8C%87%E5%90%91free%E5%90%8E%E5%86%85%E5%AD%98%E7%9A%84%E6%8C%87%E9%92%881.jpg" alt></p>
+<p>可以看到，测试 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>1</mn></mrow><annotation encoding="application/x-tex">1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">1</span></span></span></span> 中 <code>free(p)</code> 后 <code>p</code> 指向内存中的内容发生了改变，而 测试 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>2</mn></mrow><annotation encoding="application/x-tex">2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">2</span></span></span></span> 中 <code>free(q)</code> 后 <code>q</code> 指向内存中的内容并没有发生变化，这又是为什么呢？难道 <strong>gcc</strong> 编译器对于是否覆盖 <code>free</code> 后的内存中的内容还有什么规则吗？这个疑问暂时得不到解答，留待日后弄清。</p>
+<h2 id="3-总结"><a class="markdownIt-Anchor" href="#3-总结"></a> 3. 总结</h2>
+<p>调用 <code>free</code> 函数释放内存后，原先指向这块内存的指针 <code>p</code> 仍然指向这块内存，不过这时候的指向已经是不合法的了。如果这块内存被分配用作其他用途，这时再次引用指针 <code>p</code> (当做 <code>free(p)</code> 之前的用途来使用) 就有可能引发未知的错误 (前言中的程序尽管在 <strong>gcc</strong> 编译下能够正常运行，并且内存释放后也没有再分配，但引用指向已释放内存的指针 <code>p</code> 还是使程序产生了漏洞)。所以，在 <code>free(p)</code> 后，最好不要出现使用指向已释放内存的指针 <code>p</code> 的情况，必要时应将 <code>p</code> 置为 <code>NULL</code>。</p>
+<hr>
+<p><strong>参考资料</strong></p>
+<ol>
+<li>
+<p><a target="_blank" rel="noopener" href="http://c.biancheng.net/view/223.html">动态内存分配，C语言动态内存分配详解</a></p>
+</li>
+<li>
+<p><a target="_blank" rel="noopener" href="http://c.biancheng.net/view/383.html">malloc和free函数使用注意事项，C语言malloc和free使用详解</a></p>
+</li>
+<li>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/still-smile/p/14900609.html">（C语言内存十八）malloc函数背后的实现原理——内存池</a></p>
+</li>
+<li>
+<p><a target="_blank" rel="noopener" href="http://www.cnblogs.com/CheeseZH/">ZH奶酪：C语言中malloc()和free()函数解析</a></p>
+</li>
+<li>
+<p><a target="_blank" rel="noopener" href="https://www.dotcpp.com/wp/653.html#comments">C语言free释放内存后为什么指针里的值不变？竟然还可以输出？</a></p>
+</li>
+<li>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_48344581/article/details/114995109">C语言中free掉动态内存后原本指向这块内存的指针和内存里的值会有什么变化</a></p>
+</li>
+</ol>
+<br>
+<br>
+<center><font face="黑体" color="grey" size="4">———————— END ————————</font></center>
+    </div>
+
+    
+    
+    
+      
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>沉心
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://chenxin5.gitee.io/2022/08/08/51ccbd8b.html" title="C语言调用 free 函数释放内存后指针指向的问题">https://chenxin5.gitee.io/2022/08/08/51ccbd8b.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%BC%96%E7%A8%8B/" rel="tag"># 编程</a>
+              <a href="/tags/C-C/" rel="tag"># C/C++</a>
+              <a href="/tags/%E9%93%BE%E8%A1%A8/" rel="tag"># 链表</a>
+              <a href="/tags/%E5%A4%9A%E9%A1%B9%E5%BC%8F/" rel="tag"># 多项式</a>
+              <a href="/tags/free-%E5%87%BD%E6%95%B0/" rel="tag"># free 函数</a>
+              <a href="/tags/%E5%8A%A8%E6%80%81%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D/" rel="tag"># 动态内存分配</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/08/05/4a17b156.html" rel="prev" title="Hello World">
+      <i class="fa fa-chevron-left"></i> Hello World
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E5%89%8D%E8%A8%80"><span class="nav-text"> 1. 前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E6%AD%A3%E6%96%87"><span class="nav-text"> 2. 正文</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#21-%E5%88%86%E9%85%8D-%E4%B8%8E-%E9%87%8A%E6%94%BE"><span class="nav-text"> 2.1. “分配” 与 “释放”</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#22-%E8%BF%90%E8%A1%8C%E6%B5%8B%E8%AF%95"><span class="nav-text"> 2.2. 运行测试</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#221-vscode-%E4%B8%8B%E4%BD%BF%E7%94%A8-gcc-%E7%BC%96%E8%AF%91"><span class="nav-text"> 2.2.1. VSCode 下使用 gcc 编译</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#222-vs2022-%E4%B8%8B%E4%BD%BF%E7%94%A8-msvc-%E7%BC%96%E8%AF%91"><span class="nav-text"> 2.2.2. VS2022 下使用 MSVC 编译</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#23-%E7%A8%8B%E5%BA%8F%E6%BC%8F%E6%B4%9E%E6%B5%8B%E8%AF%95"><span class="nav-text"> 2.3. 程序漏洞测试</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#24-%E7%A8%8B%E5%BA%8F%E6%BC%8F%E6%B4%9E%E4%BF%AE%E5%A4%8D"><span class="nav-text"> 2.4. 程序漏洞修复</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#25-%E9%99%84%E5%8A%A0%E6%B5%8B%E8%AF%95"><span class="nav-text"> 2.5. 附加测试</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E6%80%BB%E7%BB%93"><span class="nav-text"> 3. 总结</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">沉心</p>
+  <div class="site-description" itemprop="description">Later equals never.</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">5</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+  <div class="links-of-recent-posts motion-element">
+    <div class="links-of-recent-posts-title">
+      <i class="fa fa-history fa-fw"></i>
+      最近文章
+    </div>
+    <ul class="links-of-recent-posts-list">
+        <li class="links-of-recent-posts-item">
+          <a href="/2022/08/08/51ccbd8b.html" title="2022&#x2F;08&#x2F;08&#x2F;51ccbd8b.html">C语言调用 free 函数释放内存后指针指向的问题</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/2022/08/05/4a17b156.html" title="2022&#x2F;08&#x2F;05&#x2F;4a17b156.html">Hello World</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/2022/08/05/3c79af21.html" title="2022&#x2F;08&#x2F;05&#x2F;3c79af21.html">LeetCode刷题笔记</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/2022/08/03/1d8ff3c8.html" title="2022&#x2F;08&#x2F;03&#x2F;1d8ff3c8.html">Markdown 学习笔记第二版</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/2022/04/12/e8e3b494.html" title="2022&#x2F;04&#x2F;12&#x2F;e8e3b494.html">Markdown 学习笔记</a>
+        </li>
+    </ul>
+  </div>
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        <script
+  async
+  src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"
+></script>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-code"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">沉心</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">16k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">27 分钟</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+
+  <script defer src="/lib/three/three.min.js"></script>
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+  
+
+  <script async src="/js/cursor/fireworks.js"></script>
+
+
+ 
+<script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/moment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/moment-precise-range-plugin@1.3.0/moment-precise-range.min.js"></script>
+<script>
+  function timer() {
+    var ages = moment.preciseDiff(moment(),moment(20220412,"YYYYMMDD"));
+    ages = ages.replace(/years?/, "年");
+    ages = ages.replace(/months?/, "月");
+    ages = ages.replace(/days?/, "天");
+    ages = ages.replace(/hours?/, "小时");
+    ages = ages.replace(/minutes?/, "分");
+    ages = ages.replace(/seconds?/, "秒");
+    ages = ages.replace(/\d+/g, '<span style="color:#FFFAFA">$&</span>');
+    div.innerHTML = `心轩已建立 ${ages}`;
+  }
+  var div = document.createElement("div");
+  //插入到copyright之后
+  var copyright = document.querySelector(".copyright");
+  document.querySelector(".footer-inner").insertBefore(div, copyright.nextSibling);
+  timer();
+  setInterval("timer()",1000)
+</script>
+
+
+
+  <!---->
+  <script type="text/javascript" src="/js/src/copyright.js"></script>
+</body>
+</html>
