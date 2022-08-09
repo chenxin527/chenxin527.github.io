@@ -46,7 +46,7 @@
 <meta property="og:image" content="https://chenxin5.gitee.io/2022/08/08/51ccbd8b/%E4%BD%BF%E7%94%A8%E6%8C%87%E5%90%91free%E5%90%8E%E5%86%85%E5%AD%98%E7%9A%84%E6%8C%87%E9%92%88.jpg">
 <meta property="og:image" content="https://chenxin5.gitee.io/2022/08/08/51ccbd8b/%E4%BD%BF%E7%94%A8%E6%8C%87%E5%90%91free%E5%90%8E%E5%86%85%E5%AD%98%E7%9A%84%E6%8C%87%E9%92%881.jpg">
 <meta property="article:published_time" content="2022-08-08T02:35:56.000Z">
-<meta property="article:modified_time" content="2022-08-08T16:52:03.796Z">
+<meta property="article:modified_time" content="2022-08-09T04:59:37.066Z">
 <meta property="article:author" content="沉心">
 <meta property="article:tag" content="编程">
 <meta property="article:tag" content="C&#x2F;C++">
@@ -253,7 +253,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-08-09 00:52:03" itemprop="dateModified" datetime="2022-08-09T00:52:03+08:00">2022-08-09</time>
+                <time title="修改时间：2022-08-09 12:59:37" itemprop="dateModified" datetime="2022-08-09T12:59:37+08:00">2022-08-09</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -379,7 +379,7 @@
 <p>运行结果如下：</p>
 <p><img src="/2022/08/08/51ccbd8b/%E4%BD%BF%E7%94%A8%E6%8C%87%E5%90%91free%E5%90%8E%E5%86%85%E5%AD%98%E7%9A%84%E6%8C%87%E9%92%881.jpg" alt></p>
 <p>可以看到，测试 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>1</mn></mrow><annotation encoding="application/x-tex">1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">1</span></span></span></span> 中 <code>free(p)</code> 后 <code>p</code> 指向内存中的内容发生了改变，而 测试 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>2</mn></mrow><annotation encoding="application/x-tex">2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">2</span></span></span></span> 中 <code>free(q)</code> 后 <code>q</code> 指向内存中的内容并没有发生变化，这又是为什么呢？难道 <strong>gcc</strong> 编译器对于是否覆盖 <code>free</code> 后的内存中的内容还有什么规则吗？这个疑问暂时得不到解答，留待日后弄清。</p>
-<h2 id="3-总结"><a class="markdownIt-Anchor" href="#3-总结"></a> 3. 总结</h2>
+<h1 id="3-总结"><a class="markdownIt-Anchor" href="#3-总结"></a> 3. 总结</h1>
 <p>调用 <code>free</code> 函数释放内存后，原先指向这块内存的指针 <code>p</code> 仍然指向这块内存，不过这时候的指向已经是不合法的了。如果这块内存被分配用作其他用途，这时再次引用指针 <code>p</code> (当做 <code>free(p)</code> 之前的用途来使用) 就有可能引发未知的错误 (前言中的程序尽管在 <strong>gcc</strong> 编译下能够正常运行，并且内存释放后也没有再分配，但引用指向已释放内存的指针 <code>p</code> 还是使程序产生了漏洞)。所以，在 <code>free(p)</code> 后，最好不要出现使用指向已释放内存的指针 <code>p</code> 的情况，必要时应将 <code>p</code> 置为 <code>NULL</code>。</p>
 <hr>
 <p><strong>参考资料</strong></p>
@@ -394,7 +394,7 @@
 <p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/still-smile/p/14900609.html">（C语言内存十八）malloc函数背后的实现原理——内存池</a></p>
 </li>
 <li>
-<p><a target="_blank" rel="noopener" href="http://www.cnblogs.com/CheeseZH/">ZH奶酪：C语言中malloc()和free()函数解析</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/CheeseZH/p/4555065.html">ZH奶酪：C语言中malloc()和free()函数解析</a></p>
 </li>
 <li>
 <p><a target="_blank" rel="noopener" href="https://www.dotcpp.com/wp/653.html#comments">C语言free释放内存后为什么指针里的值不变？竟然还可以输出？</a></p>
@@ -509,7 +509,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E5%89%8D%E8%A8%80"><span class="nav-text"> 1. 前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E6%AD%A3%E6%96%87"><span class="nav-text"> 2. 正文</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#21-%E5%88%86%E9%85%8D-%E4%B8%8E-%E9%87%8A%E6%94%BE"><span class="nav-text"> 2.1. “分配” 与 “释放”</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#22-%E8%BF%90%E8%A1%8C%E6%B5%8B%E8%AF%95"><span class="nav-text"> 2.2. 运行测试</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#221-vscode-%E4%B8%8B%E4%BD%BF%E7%94%A8-gcc-%E7%BC%96%E8%AF%91"><span class="nav-text"> 2.2.1. VSCode 下使用 gcc 编译</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#222-vs2022-%E4%B8%8B%E4%BD%BF%E7%94%A8-msvc-%E7%BC%96%E8%AF%91"><span class="nav-text"> 2.2.2. VS2022 下使用 MSVC 编译</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#23-%E7%A8%8B%E5%BA%8F%E6%BC%8F%E6%B4%9E%E6%B5%8B%E8%AF%95"><span class="nav-text"> 2.3. 程序漏洞测试</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#24-%E7%A8%8B%E5%BA%8F%E6%BC%8F%E6%B4%9E%E4%BF%AE%E5%A4%8D"><span class="nav-text"> 2.4. 程序漏洞修复</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#25-%E9%99%84%E5%8A%A0%E6%B5%8B%E8%AF%95"><span class="nav-text"> 2.5. 附加测试</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E6%80%BB%E7%BB%93"><span class="nav-text"> 3. 总结</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E5%89%8D%E8%A8%80"><span class="nav-text"> 1. 前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E6%AD%A3%E6%96%87"><span class="nav-text"> 2. 正文</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#21-%E5%88%86%E9%85%8D-%E4%B8%8E-%E9%87%8A%E6%94%BE"><span class="nav-text"> 2.1. “分配” 与 “释放”</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#22-%E8%BF%90%E8%A1%8C%E6%B5%8B%E8%AF%95"><span class="nav-text"> 2.2. 运行测试</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#221-vscode-%E4%B8%8B%E4%BD%BF%E7%94%A8-gcc-%E7%BC%96%E8%AF%91"><span class="nav-text"> 2.2.1. VSCode 下使用 gcc 编译</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#222-vs2022-%E4%B8%8B%E4%BD%BF%E7%94%A8-msvc-%E7%BC%96%E8%AF%91"><span class="nav-text"> 2.2.2. VS2022 下使用 MSVC 编译</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#23-%E7%A8%8B%E5%BA%8F%E6%BC%8F%E6%B4%9E%E6%B5%8B%E8%AF%95"><span class="nav-text"> 2.3. 程序漏洞测试</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#24-%E7%A8%8B%E5%BA%8F%E6%BC%8F%E6%B4%9E%E4%BF%AE%E5%A4%8D"><span class="nav-text"> 2.4. 程序漏洞修复</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#25-%E9%99%84%E5%8A%A0%E6%B5%8B%E8%AF%95"><span class="nav-text"> 2.5. 附加测试</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-%E6%80%BB%E7%BB%93"><span class="nav-text"> 3. 总结</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
