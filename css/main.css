@@ -1280,7 +1280,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #0421b1;
+  background: #8ce90b;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -2535,7 +2535,7 @@ embed {
   white-space: nowrap;
 }
 body {
-  background: url("https://pixabay.com/get/g7e543e25ae0157fbede0b336edca825fde22c724b0c57511c358e3d774124df23e3aca2d7f09ca5b75fbcba7759c3448b8f46792eb1bf68b2875664487ad7e83_1920.jpg");
+  background: url("/images/background/background1-1.jpg");
   background-size: cover;
   background-repeat: no-repeat;
   background-attachment: fixed;
