@@ -634,148 +634,6 @@ F_R       &amp;      &amp; {S_R \leq 0}
       </categories>
   </entry>
   <entry>
-    <title>C语言调用 free 函数释放内存后指针指向及内存中的值是否改变的问题</title>
-    <url>/2022/08/08/51ccbd8b.html</url>
-    <content><![CDATA[<link href="https://lf9-cdn-tos.bytecdntp.com/cdn/expire-1-M/KaTeX/0.10.2/katex.min.css" rel="stylesheet">
-<span id="more"></span>
-<h1 id="1-前言"><a class="markdownIt-Anchor" href="#1-前言"></a> 1. 前言</h1>
-<p>上机时遇到如下 C++ 代码 ( C 代码)：</p>
-<figure class="highlight c++"><figcaption><span>删除带头结点的多项式单链表中系数为 0 项</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">DelZero</span><span class="params">(PolyNode *&amp;L)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    PolyNode *pre = L, *p = pre-&gt;next;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> (p != <span class="literal">NULL</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (p-&gt;coef == <span class="number">0.0</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            pre-&gt;next = p-&gt;next;</span><br><span class="line">            <span class="built_in">free</span>(p);</span><br><span class="line">        &#125;</span><br><span class="line">        pre = p;</span><br><span class="line">        p = p-&gt;next;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">来源：《数据结构教程 (第 <span class="number">5</span> 版) 上机实验指导》(李春葆主编) 第二章实验题 <span class="number">10</span></span><br></pre></td></tr></table></figure>
-<p>当 <code>if</code> 语句执行后，指针 <code>p</code> 指向的内存已经被释放，接着又执行 <code>p = p-&gt;next</code>，使用了指向已经被释放了的内存的指针。那么，这样的用法是否正确呢？</p>
-<h1 id="2-正文"><a class="markdownIt-Anchor" href="#2-正文"></a> 2. 正文</h1>
-<p><code>free(p)</code> 后 <code>p = p-&gt;next</code> 能否正确执行，要看编译器的具体实现，不同的编译器可能会产生不同的结果。上述程序我在 <strong>VSCode</strong> 中使用 <strong>gcc</strong> 编译能正常运行，但使用 <strong>VS2022</strong> 的 <strong>MSVC</strong> 编译后不能正常运行。而且即便能够正常运行，这种用法也会导致程序出现漏洞。</p>
-<h2 id="21-分配-与-释放"><a class="markdownIt-Anchor" href="#21-分配-与-释放"></a> 2.1. “分配” 与 “释放”</h2>
-<p>在调用内存分配函数 (<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>m</mi><mi>a</mi><mi>l</mi><mi>l</mi><mi>o</mi><mi>c</mi><mi mathvariant="normal">、</mi><mi>c</mi><mi>a</mi><mi>l</mi><mi>l</mi><mi>o</mi><mi>c</mi></mrow><annotation encoding="application/x-tex">malloc、calloc</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathdefault">m</span><span class="mord mathdefault">a</span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="mord mathdefault">o</span><span class="mord mathdefault">c</span><span class="mord cjk_fallback">、</span><span class="mord mathdefault">c</span><span class="mord mathdefault">a</span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="mord mathdefault">o</span><span class="mord mathdefault">c</span></span></span></span> 等) 在堆区分配一块内存后，这块内存会被标记为 <strong>已使用</strong>，确保在之后的内存分配中不会将这块已经分配过的内存进行二次分配。</p>
-<p>而调用 <code>free</code> 函数将内存释放后，这块内存便会被标记为 <strong>未使用</strong>，在往后的内存分配中这块内存便能再次被分配了。而 <code>free</code> 后内存中的值是否改变这要看编译器的具体实现，不同编译器可能具有不同的实现方式。</p>
-<h2 id="22-运行测试"><a class="markdownIt-Anchor" href="#22-运行测试"></a> 2.2. 运行测试</h2>
-<h3 id="221-vscode-下使用-gcc-编译"><a class="markdownIt-Anchor" href="#221-vscode-下使用-gcc-编译"></a> 2.2.1. VSCode 下使用 gcc 编译</h3>
-<p>在调用 <code>free</code> 函数释放动态分配的内存后，指针 <code>p</code> 仍然指向这块已经被释放的内存 (指针变量 <code>p</code> 中仍然保存着这块内存的地址)，而使用 <strong>gcc</strong> 进行编译，被释放的内存中原有的内容并未被覆盖 (前言中给出的代码对应的程序是这样，一会儿会举个反例)，执行 <code>p = p-&gt;next</code> 后 <code>p</code> 指向单链表的下一个结点，因此程序能正常运行而不会错误中止。虽然能正常运行，但程序存在漏洞。</p>
-<p>参见 <a href="#23-%E7%A8%8B%E5%BA%8F%E6%BC%8F%E6%B4%9E%E6%B5%8B%E8%AF%95">2.3 程序漏洞测试</a></p>
-<h3 id="222-vs2022-下使用-msvc-编译"><a class="markdownIt-Anchor" href="#222-vs2022-下使用-msvc-编译"></a> 2.2.2. VS2022 下使用 MSVC 编译</h3>
-<p>在 <strong>VS2022</strong> 下使用 <strong>MSVC</strong> 进行编译，第一次执行 <code>free(p)</code> 前 <code>p</code> 指向的内存中的内容如下：</p>
-<p><img src="/2022/08/08/51ccbd8b/VS%E8%BF%90%E8%A1%8C%E6%83%85%E5%86%B51.jpg" alt="VS1"></p>
-<p>第一次执行 <code>free(p)</code> 后，<code>p</code> 指向的内存中的内容被覆盖 (红色部分)，这时再执行 <code>p = p-&gt;next</code> 便会产生错误，使程序卡死在这一步。</p>
-<p><img src="/2022/08/08/51ccbd8b/VS%E8%BF%90%E8%A1%8C%E6%83%85%E5%86%B52.jpg" alt="VS2"></p>
-<p><img src="/2022/08/08/51ccbd8b/VS%E8%BF%90%E8%A1%8C%E6%83%85%E5%86%B53.jpg" alt="VS3"></p>
-<h2 id="23-程序漏洞测试"><a class="markdownIt-Anchor" href="#23-程序漏洞测试"></a> 2.3. 程序漏洞测试</h2>
-<p>我们举一个例子来说明在能正常运行的前提下 (<strong>gcc</strong> 编译)，前言中的程序存在的漏洞。</p>
-<ol>
-<li>根据多项式 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><msup><mi>x</mi><mn>9</mn></msup><mo>+</mo><mn>0</mn><msup><mi>x</mi><mn>5</mn></msup><mo>+</mo><mn>0</mn><msup><mi>x</mi><mn>3</mn></msup><mo>+</mo><mn>3</mn><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>0</mn><mi>x</mi></mrow><annotation encoding="application/x-tex">x^9 + 0x^5 + 0x^3 + 3x^2 + 0x</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.897438em;vertical-align:-0.08333em;"></span><span class="mord"><span class="mord mathdefault">x</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">9</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.897438em;vertical-align:-0.08333em;"></span><span class="mord">0</span><span class="mord"><span class="mord mathdefault">x</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">5</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.897438em;vertical-align:-0.08333em;"></span><span class="mord">0</span><span class="mord"><span class="mord mathdefault">x</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">3</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.897438em;vertical-align:-0.08333em;"></span><span class="mord">3</span><span class="mord"><span class="mord mathdefault">x</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">0</span><span class="mord mathdefault">x</span></span></span></span> 创建一个多项式单链表 (如下, 这里为了方便只写出系数)。</li>
-</ol>
-<p><img src="/2022/08/08/51ccbd8b/list1.jpg" alt="list1"></p>
-<ol start="2">
-<li><code>pre</code> 和 <code>p</code> 初始指向如图。</li>
-</ol>
-<p><img src="/2022/08/08/51ccbd8b/list2.jpg" alt="list2"></p>
-<ol start="3">
-<li>此时 <code>p != NULL</code>，进行第 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>1</mn></mrow><annotation encoding="application/x-tex">1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">1</span></span></span></span> 次循环，<code>p-&gt;coef == 1</code>，两指针向后移。</li>
-</ol>
-<p><img src="/2022/08/08/51ccbd8b/list3.jpg" alt="list3"></p>
-<ol start="4">
-<li>此时 <code>p != NULL</code>，进行第 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>2</mn></mrow><annotation encoding="application/x-tex">2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">2</span></span></span></span> 次循环，<code>p-&gt;coef == 0</code>, 删除 <code>p</code> 指向的结点后两指针向后移。整理一下这一步得到的单链表。</li>
-</ol>
-<p><img src="/2022/08/08/51ccbd8b/list5.jpg" alt="list5"></p>
-<p><img src="/2022/08/08/51ccbd8b/list6.jpg" alt="list6"></p>
-<ol start="5">
-<li>此时 <code>p != NULL</code>，进行第 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>3</mn></mrow><annotation encoding="application/x-tex">3</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">3</span></span></span></span> 次循环，<code>p-&gt;coef == 0</code>, 这时本应删除 <code>p</code> 指向的结点后两指针向后移，但此时 <code>pre</code> 指针指向的是已经被释放的结点，<code>pre-&gt;next = p-&gt;next</code> 改变的是已释放结点的 <code>next</code> 域指向，从而导致 <strong>漏删</strong> 了一个本应删除的结点。</li>
-</ol>
-<p><img src="/2022/08/08/51ccbd8b/list7.jpg" alt="list7"></p>
-<ol start="6">
-<li>此时 <code>p != NULL</code>，进行第 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>4</mn></mrow><annotation encoding="application/x-tex">4</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">4</span></span></span></span> 次循环，<code>p-&gt;coef != 0</code>, 两指针向后移。</li>
-</ol>
-<p><img src="/2022/08/08/51ccbd8b/list8.jpg" alt="list8"></p>
-<ol start="7">
-<li>此时 <code>p != NULL</code>，进行第 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>5</mn></mrow><annotation encoding="application/x-tex">5</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">5</span></span></span></span> 次循环，<code>p-&gt;coef == 0</code>, 删除 <code>p</code> 指向的结点后两指针向后移。</li>
-</ol>
-<p><img src="/2022/08/08/51ccbd8b/list9.jpg" alt="list9"></p>
-<ol start="8">
-<li>此时 <code>p == NULL</code>，循环结束，最终得到的单链表如图。</li>
-</ol>
-<p><img src="/2022/08/08/51ccbd8b/list10.jpg" alt="list10"></p>
-<br>
-<p>测试代码如下，这里打印出 <code>free(p)</code> 执行前后指针变量 <code>p</code> 中内容以及 <code>p</code> 指向的内存中的内容。</p>
-<figure class="highlight c++"><figcaption><span>程序漏洞测试代码 (仅列出与漏洞有关代码)</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">DelZero</span><span class="params">(PolyNode *&amp;L)</span>  <span class="comment">//删除系数为零的项</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    PolyNode *pre = L, *p = pre-&gt;next;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> (p != <span class="literal">NULL</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (p-&gt;coef == <span class="number">0.0</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            pre-&gt;next = p-&gt;next;</span><br><span class="line"></span><br><span class="line">            <span class="meta">#<span class="keyword">ifdef</span> DEBUG</span></span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot;free(p) 前, p = %p, p-&gt;coef = %f, &quot;</span></span><br><span class="line">                   <span class="string">&quot;p-&gt;exp = %d, p-&gt;next = %p\n&quot;</span>, p, p-&gt;coef, p-&gt;exp, p-&gt;next);</span><br><span class="line">            <span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line">            <span class="built_in">free</span>(p);</span><br><span class="line">            <span class="meta">#<span class="keyword">ifdef</span> DEBUG</span></span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot;free(p) 后, p = %p, p-&gt;coef = %f, &quot;</span></span><br><span class="line">                   <span class="string">&quot;p-&gt;exp = %d, p-&gt;next = %p\n\n&quot;</span>, p, p-&gt;coef, p-&gt;exp, p-&gt;next);</span><br><span class="line">            <span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line">            p = pre-&gt;next;</span><br><span class="line">            <span class="keyword">continue</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        pre = p;</span><br><span class="line">        p = p-&gt;next;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    PolyArray a[] = &#123;&#123;<span class="number">1</span>, <span class="number">9</span>&#125;, &#123;<span class="number">0</span>, <span class="number">5</span>&#125;, &#123;<span class="number">0</span>, <span class="number">3</span>&#125;, &#123;<span class="number">3</span>, <span class="number">2</span>&#125;, &#123;<span class="number">0</span>, <span class="number">1</span>&#125;&#125;;</span><br><span class="line">    PolyNode *L;</span><br><span class="line">    <span class="type">int</span> n = <span class="number">5</span>;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">CreatePolyR</span>(L, a, <span class="number">5</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;原多项式为: &quot;</span>);</span><br><span class="line">    <span class="built_in">DispPoly</span>(L);</span><br><span class="line"></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;删除系数为 0 项后为: \n\n&quot;</span>);</span><br><span class="line">    <span class="built_in">DelZero</span>(L);</span><br><span class="line">    <span class="built_in">DispPoly</span>(L);</span><br><span class="line"></span><br><span class="line">    <span class="built_in">DestroyPoly</span>(L);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>执行结果如图所示：</p>
-<p><img src="/2022/08/08/51ccbd8b/%E7%A8%8B%E5%BA%8F%E6%BC%8F%E6%B4%9E%E6%B5%8B%E8%AF%95%E7%BB%93%E6%9E%9C1.jpg" alt="result1"></p>
-<p>可以看到，<code>free(p)</code> 操作执行前后，指针变量 <code>p</code> 中内容以及 <code>p</code> 指向的内存中的内容均未发生改变，所以在 <code>free(p)</code> 后执行 <code>p = p-&gt;next</code> 编译器并不会报错，但却给程序带来了逻辑上的漏洞。</p>
-<h2 id="24-程序漏洞修复"><a class="markdownIt-Anchor" href="#24-程序漏洞修复"></a> 2.4. 程序漏洞修复</h2>
-<figure class="highlight diff"><figcaption><span>删除带头结点的多项式单链表中系数为 0 项 (Beta)</span></figcaption><table><tr><td class="code"><pre><span class="line">void DelZero(PolyNode *&amp;L)</span><br><span class="line">&#123;</span><br><span class="line">    PolyNode *pre = L, *p = pre-&gt;next;</span><br><span class="line"></span><br><span class="line">    while (p != NULL)</span><br><span class="line">    &#123;</span><br><span class="line">        if (p-&gt;coef == 0.0)</span><br><span class="line">        &#123;</span><br><span class="line">            pre-&gt;next = p-&gt;next;</span><br><span class="line">            free(p);</span><br><span class="line"><span class="addition">+           p = pre-&gt;next;</span></span><br><span class="line"><span class="addition">+           continue;</span></span><br><span class="line">        &#125;</span><br><span class="line">        pre = p;</span><br><span class="line">        p = p-&gt;next;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>漏洞修复后运行结果如图：</p>
-<p><img src="/2022/08/08/51ccbd8b/%E7%A8%8B%E5%BA%8F%E6%BC%8F%E6%B4%9E%E6%B5%8B%E8%AF%95%E7%BB%93%E6%9E%9C2.jpg" alt="result2"></p>
-<h2 id="25-附加测试"><a class="markdownIt-Anchor" href="#25-附加测试"></a> 2.5. 附加测试</h2>
-<p>在 <strong>VSCode</strong> 下使用 <strong>gcc</strong> 编译以下 C 代码：</p>
-<figure class="highlight c"><figcaption><span>测试 1</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;malloc.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> *p = (<span class="type">int</span> *) <span class="built_in">malloc</span> (<span class="keyword">sizeof</span>(<span class="type">int</span>));</span><br><span class="line"></span><br><span class="line">    *p = <span class="number">9</span>;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;p = %p\n&quot;</span>, p);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;free(p) 前 *p = %d\n&quot;</span>, *p);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;-----------------\n&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="built_in">free</span>(p);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;p = %p\n&quot;</span>, p);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;free(p) 后 *p = %d\n&quot;</span>, *p); </span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;------------------------\n&quot;</span>);</span><br><span class="line">    </span><br><span class="line">    *p = <span class="number">9</span>;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;p = %p\n&quot;</span>, p);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;free(p) 后再执行 *p = 9, 此时 *p = %d\n\n&quot;</span>, *p);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>测试 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>1</mn></mrow><annotation encoding="application/x-tex">1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">1</span></span></span></span> 运行结果如下：</p>
-<p><img src="/2022/08/08/51ccbd8b/%E4%BD%BF%E7%94%A8%E6%8C%87%E5%90%91free%E5%90%8E%E5%86%85%E5%AD%98%E7%9A%84%E6%8C%87%E9%92%881.jpg" alt></p>
-<figure class="highlight c"><figcaption><span>测试 2</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;malloc.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">char</span> *q = (<span class="type">char</span> *) <span class="built_in">malloc</span> (<span class="number">20</span> * <span class="keyword">sizeof</span>(<span class="type">char</span>));</span><br><span class="line"></span><br><span class="line">    q = <span class="string">&quot;Hello World&quot;</span>;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;q = %p\n&quot;</span>, q);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;free(q) 前 q 指向内存中的内容为: %s\n&quot;</span>, q);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;--------------------------------------------\n&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="built_in">free</span>(q);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;q = %p\n&quot;</span>, q);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;free(q) 后 q 指向内存中的内容为: %s\n&quot;</span>, q); </span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;--------------------------------------------\n&quot;</span>);</span><br><span class="line"></span><br><span class="line">    q = <span class="string">&quot;Are you OK?&quot;</span>;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;q = %p\n&quot;</span>, q);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;free(q) 后执行 q = \&quot;Are you OK?\&quot;, 此时 q 指向内存中的内容为: %s\n\n&quot;</span>, q);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>测试 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>2</mn></mrow><annotation encoding="application/x-tex">2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">2</span></span></span></span> 运行结果如下：</p>
-<p><img src="/2022/08/08/51ccbd8b/%E4%BD%BF%E7%94%A8%E6%8C%87%E5%90%91free%E5%90%8E%E5%86%85%E5%AD%98%E7%9A%84%E6%8C%87%E9%92%882.jpg" alt></p>
-<p>可以看到，测试 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>1</mn></mrow><annotation encoding="application/x-tex">1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">1</span></span></span></span> 中 <code>free(p)</code> 后 <code>p</code> 指向内存中的内容发生了改变，而 测试 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>2</mn></mrow><annotation encoding="application/x-tex">2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">2</span></span></span></span> 中 <code>free(q)</code> 后 <code>q</code> 指向内存中的内容并没有发生变化，这又是为什么呢？难道 <strong>gcc</strong> 编译器对于是否覆盖 <code>free</code> 后的内存中的内容还有什么规则吗？这个疑问暂时得不到解答，留待日后弄清。</p>
-<h1 id="3-总结"><a class="markdownIt-Anchor" href="#3-总结"></a> 3. 总结</h1>
-<p>调用 <code>free</code> 函数释放内存后，原先指向这块内存的指针 <code>p</code> 仍然指向这块内存，不过这时候的指向已经是不合法的了。如果这块内存被分配用作其他用途，这时再次引用指针 <code>p</code> (当做 <code>free(p)</code> 之前的用途来使用) 就有可能引发未知的错误 (前言中的程序尽管在 <strong>gcc</strong> 编译下能够正常运行，并且内存释放后也没有再分配，但引用指向已释放内存的指针 <code>p</code> 还是使程序产生了漏洞)。所以，在 <code>free(p)</code> 后，最好不要出现使用指向已释放内存的指针 <code>p</code> 的情况，必要时应将 <code>p</code> 置为 <code>NULL</code>。</p>
-<hr>
-<p><strong>参考资料</strong></p>
-<ol>
-<li>
-<p><a href="http://c.biancheng.net/view/223.html">动态内存分配，C语言动态内存分配详解</a></p>
-</li>
-<li>
-<p><a href="http://c.biancheng.net/view/383.html">malloc和free函数使用注意事项，C语言malloc和free使用详解</a></p>
-</li>
-<li>
-<p><a href="https://www.cnblogs.com/still-smile/p/14900609.html">（C语言内存十八）malloc函数背后的实现原理——内存池</a></p>
-</li>
-<li>
-<p><a href="https://www.cnblogs.com/CheeseZH/p/4555065.html">ZH奶酪：C语言中malloc()和free()函数解析</a></p>
-</li>
-<li>
-<p><a href="https://www.dotcpp.com/wp/653.html">C语言free释放内存后为什么指针里的值不变？竟然还可以输出？</a></p>
-</li>
-<li>
-<p><a href="https://blog.csdn.net/weixin_48344581/article/details/114995109">C语言中free掉动态内存后原本指向这块内存的指针和内存里的值会有什么变化</a></p>
-</li>
-</ol>
-<br>
-<br>
-<center><font face="黑体" color="grey" size="4">———————— END ————————</font></center>]]></content>
-      <categories>
-        <category>编程札记</category>
-        <category>C/C++</category>
-      </categories>
-      <tags>
-        <tag>编程</tag>
-        <tag>C/C++</tag>
-        <tag>链表</tag>
-        <tag>多项式</tag>
-        <tag>free 函数</tag>
-        <tag>动态内存分配</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Hello World</title>
-    <url>/2022/08/05/4a17b156.html</url>
-    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<span id="more"></span>
-<iframe src="https://giphy.com/embed/MeJgB3yMMwIaHmKD4z" width="480" height="394" frameborder="0" class="giphy-embed" allowfullscreen></iframe><p><a href="https://giphy.com/gifs/2000s-00s-middle-school-MeJgB3yMMwIaHmKD4z">via GIPHY</a></p>
-<h2 id="quick-start"><a class="markdownIt-Anchor" href="#quick-start"></a> Quick Start</h2>
-<h3 id="create-a-new-post"><a class="markdownIt-Anchor" href="#create-a-new-post"></a> Create a new post</h3>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="run-server"><a class="markdownIt-Anchor" href="#run-server"></a> Run server</h3>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="generate-static-files"><a class="markdownIt-Anchor" href="#generate-static-files"></a> Generate static files</h3>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="deploy-to-remote-sites"><a class="markdownIt-Anchor" href="#deploy-to-remote-sites"></a> Deploy to remote sites</h3>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-<center><font face="黑体" color="black" size="4">----------------- END -----------------</font></center>]]></content>
-      <categories>
-        <category>其他</category>
-      </categories>
-  </entry>
-  <entry>
     <title>LeetCode刷题笔记</title>
     <url>/2022/08/05/3c79af21.html</url>
     <content><![CDATA[<link href="https://lf9-cdn-tos.bytecdntp.com/cdn/expire-1-M/KaTeX/0.10.2/katex.min.css" rel="stylesheet">
@@ -1188,6 +1046,124 @@ list2[0]+merge(list1,list2[1:])&amp; \text{$otherwise$}
       <categories>
         <category>刷题笔记</category>
       </categories>
+  </entry>
+  <entry>
+    <title>C语言调用 free 函数释放内存后指针指向及内存中的值是否改变的问题</title>
+    <url>/2022/08/08/51ccbd8b.html</url>
+    <content><![CDATA[<link href="https://lf9-cdn-tos.bytecdntp.com/cdn/expire-1-M/KaTeX/0.10.2/katex.min.css" rel="stylesheet">
+<span id="more"></span>
+<h1 id="1-前言"><a class="markdownIt-Anchor" href="#1-前言"></a> 1. 前言</h1>
+<p>上机时遇到如下 C++ 代码 ( C 代码)：</p>
+<figure class="highlight c++"><figcaption><span>删除带头结点的多项式单链表中系数为 0 项</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">DelZero</span><span class="params">(PolyNode *&amp;L)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    PolyNode *pre = L, *p = pre-&gt;next;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> (p != <span class="literal">NULL</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (p-&gt;coef == <span class="number">0.0</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            pre-&gt;next = p-&gt;next;</span><br><span class="line">            <span class="built_in">free</span>(p);</span><br><span class="line">        &#125;</span><br><span class="line">        pre = p;</span><br><span class="line">        p = p-&gt;next;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">来源：《数据结构教程 (第 <span class="number">5</span> 版) 上机实验指导》(李春葆主编) 第二章实验题 <span class="number">10</span></span><br></pre></td></tr></table></figure>
+<p>当 <code>if</code> 语句执行后，指针 <code>p</code> 指向的内存已经被释放，接着又执行 <code>p = p-&gt;next</code>，使用了指向已经被释放了的内存的指针。那么，这样的用法是否正确呢？</p>
+<h1 id="2-正文"><a class="markdownIt-Anchor" href="#2-正文"></a> 2. 正文</h1>
+<p><code>free(p)</code> 后 <code>p = p-&gt;next</code> 能否正确执行，要看编译器的具体实现，不同的编译器可能会产生不同的结果。上述程序我在 <strong>VSCode</strong> 中使用 <strong>gcc</strong> 编译能正常运行，但使用 <strong>VS2022</strong> 的 <strong>MSVC</strong> 编译后不能正常运行。而且即便能够正常运行，这种用法也会导致程序出现漏洞。</p>
+<h2 id="21-分配-与-释放"><a class="markdownIt-Anchor" href="#21-分配-与-释放"></a> 2.1. “分配” 与 “释放”</h2>
+<p>在调用内存分配函数 (<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>m</mi><mi>a</mi><mi>l</mi><mi>l</mi><mi>o</mi><mi>c</mi><mi mathvariant="normal">、</mi><mi>c</mi><mi>a</mi><mi>l</mi><mi>l</mi><mi>o</mi><mi>c</mi></mrow><annotation encoding="application/x-tex">malloc、calloc</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathdefault">m</span><span class="mord mathdefault">a</span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="mord mathdefault">o</span><span class="mord mathdefault">c</span><span class="mord cjk_fallback">、</span><span class="mord mathdefault">c</span><span class="mord mathdefault">a</span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="mord mathdefault">o</span><span class="mord mathdefault">c</span></span></span></span> 等) 在堆区分配一块内存后，这块内存会被标记为 <strong>已使用</strong>，确保在之后的内存分配中不会将这块已经分配过的内存进行二次分配。</p>
+<p>而调用 <code>free</code> 函数将内存释放后，这块内存便会被标记为 <strong>未使用</strong>，在往后的内存分配中这块内存便能再次被分配了。而 <code>free</code> 后内存中的值是否改变这要看编译器的具体实现，不同编译器可能具有不同的实现方式。</p>
+<h2 id="22-运行测试"><a class="markdownIt-Anchor" href="#22-运行测试"></a> 2.2. 运行测试</h2>
+<h3 id="221-vscode-下使用-gcc-编译"><a class="markdownIt-Anchor" href="#221-vscode-下使用-gcc-编译"></a> 2.2.1. VSCode 下使用 gcc 编译</h3>
+<p>在调用 <code>free</code> 函数释放动态分配的内存后，指针 <code>p</code> 仍然指向这块已经被释放的内存 (指针变量 <code>p</code> 中仍然保存着这块内存的地址)，而使用 <strong>gcc</strong> 进行编译，被释放的内存中原有的内容并未被覆盖 (前言中给出的代码对应的程序是这样，一会儿会举个反例)，执行 <code>p = p-&gt;next</code> 后 <code>p</code> 指向单链表的下一个结点，因此程序能正常运行而不会错误中止。虽然能正常运行，但程序存在漏洞。</p>
+<p>参见 <a href="#23-%E7%A8%8B%E5%BA%8F%E6%BC%8F%E6%B4%9E%E6%B5%8B%E8%AF%95">2.3 程序漏洞测试</a></p>
+<h3 id="222-vs2022-下使用-msvc-编译"><a class="markdownIt-Anchor" href="#222-vs2022-下使用-msvc-编译"></a> 2.2.2. VS2022 下使用 MSVC 编译</h3>
+<p>在 <strong>VS2022</strong> 下使用 <strong>MSVC</strong> 进行编译，第一次执行 <code>free(p)</code> 前 <code>p</code> 指向的内存中的内容如下：</p>
+<p><img src="/2022/08/08/51ccbd8b/VS%E8%BF%90%E8%A1%8C%E6%83%85%E5%86%B51.jpg" alt="VS1"></p>
+<p>第一次执行 <code>free(p)</code> 后，<code>p</code> 指向的内存中的内容被覆盖 (红色部分)，这时再执行 <code>p = p-&gt;next</code> 便会产生错误，使程序卡死在这一步。</p>
+<p><img src="/2022/08/08/51ccbd8b/VS%E8%BF%90%E8%A1%8C%E6%83%85%E5%86%B52.jpg" alt="VS2"></p>
+<p><img src="/2022/08/08/51ccbd8b/VS%E8%BF%90%E8%A1%8C%E6%83%85%E5%86%B53.jpg" alt="VS3"></p>
+<h2 id="23-程序漏洞测试"><a class="markdownIt-Anchor" href="#23-程序漏洞测试"></a> 2.3. 程序漏洞测试</h2>
+<p>我们举一个例子来说明在能正常运行的前提下 (<strong>gcc</strong> 编译)，前言中的程序存在的漏洞。</p>
+<ol>
+<li>根据多项式 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><msup><mi>x</mi><mn>9</mn></msup><mo>+</mo><mn>0</mn><msup><mi>x</mi><mn>5</mn></msup><mo>+</mo><mn>0</mn><msup><mi>x</mi><mn>3</mn></msup><mo>+</mo><mn>3</mn><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>0</mn><mi>x</mi></mrow><annotation encoding="application/x-tex">x^9 + 0x^5 + 0x^3 + 3x^2 + 0x</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.897438em;vertical-align:-0.08333em;"></span><span class="mord"><span class="mord mathdefault">x</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">9</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.897438em;vertical-align:-0.08333em;"></span><span class="mord">0</span><span class="mord"><span class="mord mathdefault">x</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">5</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.897438em;vertical-align:-0.08333em;"></span><span class="mord">0</span><span class="mord"><span class="mord mathdefault">x</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">3</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.897438em;vertical-align:-0.08333em;"></span><span class="mord">3</span><span class="mord"><span class="mord mathdefault">x</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">0</span><span class="mord mathdefault">x</span></span></span></span> 创建一个多项式单链表 (如下, 这里为了方便只写出系数)。</li>
+</ol>
+<p><img src="/2022/08/08/51ccbd8b/list1.jpg" alt="list1"></p>
+<ol start="2">
+<li><code>pre</code> 和 <code>p</code> 初始指向如图。</li>
+</ol>
+<p><img src="/2022/08/08/51ccbd8b/list2.jpg" alt="list2"></p>
+<ol start="3">
+<li>此时 <code>p != NULL</code>，进行第 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>1</mn></mrow><annotation encoding="application/x-tex">1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">1</span></span></span></span> 次循环，<code>p-&gt;coef == 1</code>，两指针向后移。</li>
+</ol>
+<p><img src="/2022/08/08/51ccbd8b/list3.jpg" alt="list3"></p>
+<ol start="4">
+<li>此时 <code>p != NULL</code>，进行第 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>2</mn></mrow><annotation encoding="application/x-tex">2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">2</span></span></span></span> 次循环，<code>p-&gt;coef == 0</code>, 删除 <code>p</code> 指向的结点后两指针向后移。整理一下这一步得到的单链表。</li>
+</ol>
+<p><img src="/2022/08/08/51ccbd8b/list5.jpg" alt="list5"></p>
+<p><img src="/2022/08/08/51ccbd8b/list6.jpg" alt="list6"></p>
+<ol start="5">
+<li>此时 <code>p != NULL</code>，进行第 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>3</mn></mrow><annotation encoding="application/x-tex">3</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">3</span></span></span></span> 次循环，<code>p-&gt;coef == 0</code>, 这时本应删除 <code>p</code> 指向的结点后两指针向后移，但此时 <code>pre</code> 指针指向的是已经被释放的结点，<code>pre-&gt;next = p-&gt;next</code> 改变的是已释放结点的 <code>next</code> 域指向，从而导致 <strong>漏删</strong> 了一个本应删除的结点。</li>
+</ol>
+<p><img src="/2022/08/08/51ccbd8b/list7.jpg" alt="list7"></p>
+<ol start="6">
+<li>此时 <code>p != NULL</code>，进行第 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>4</mn></mrow><annotation encoding="application/x-tex">4</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">4</span></span></span></span> 次循环，<code>p-&gt;coef != 0</code>, 两指针向后移。</li>
+</ol>
+<p><img src="/2022/08/08/51ccbd8b/list8.jpg" alt="list8"></p>
+<ol start="7">
+<li>此时 <code>p != NULL</code>，进行第 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>5</mn></mrow><annotation encoding="application/x-tex">5</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">5</span></span></span></span> 次循环，<code>p-&gt;coef == 0</code>, 删除 <code>p</code> 指向的结点后两指针向后移。</li>
+</ol>
+<p><img src="/2022/08/08/51ccbd8b/list9.jpg" alt="list9"></p>
+<ol start="8">
+<li>此时 <code>p == NULL</code>，循环结束，最终得到的单链表如图。</li>
+</ol>
+<p><img src="/2022/08/08/51ccbd8b/list10.jpg" alt="list10"></p>
+<br>
+<p>测试代码如下，这里打印出 <code>free(p)</code> 执行前后指针变量 <code>p</code> 中内容以及 <code>p</code> 指向的内存中的内容。</p>
+<figure class="highlight c++"><figcaption><span>程序漏洞测试代码 (仅列出与漏洞有关代码)</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">DelZero</span><span class="params">(PolyNode *&amp;L)</span>  <span class="comment">//删除系数为零的项</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    PolyNode *pre = L, *p = pre-&gt;next;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> (p != <span class="literal">NULL</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (p-&gt;coef == <span class="number">0.0</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            pre-&gt;next = p-&gt;next;</span><br><span class="line"></span><br><span class="line">            <span class="meta">#<span class="keyword">ifdef</span> DEBUG</span></span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot;free(p) 前, p = %p, p-&gt;coef = %f, &quot;</span></span><br><span class="line">                   <span class="string">&quot;p-&gt;exp = %d, p-&gt;next = %p\n&quot;</span>, p, p-&gt;coef, p-&gt;exp, p-&gt;next);</span><br><span class="line">            <span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line">            <span class="built_in">free</span>(p);</span><br><span class="line">            <span class="meta">#<span class="keyword">ifdef</span> DEBUG</span></span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot;free(p) 后, p = %p, p-&gt;coef = %f, &quot;</span></span><br><span class="line">                   <span class="string">&quot;p-&gt;exp = %d, p-&gt;next = %p\n\n&quot;</span>, p, p-&gt;coef, p-&gt;exp, p-&gt;next);</span><br><span class="line">            <span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line">            p = pre-&gt;next;</span><br><span class="line">            <span class="keyword">continue</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        pre = p;</span><br><span class="line">        p = p-&gt;next;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    PolyArray a[] = &#123;&#123;<span class="number">1</span>, <span class="number">9</span>&#125;, &#123;<span class="number">0</span>, <span class="number">5</span>&#125;, &#123;<span class="number">0</span>, <span class="number">3</span>&#125;, &#123;<span class="number">3</span>, <span class="number">2</span>&#125;, &#123;<span class="number">0</span>, <span class="number">1</span>&#125;&#125;;</span><br><span class="line">    PolyNode *L;</span><br><span class="line">    <span class="type">int</span> n = <span class="number">5</span>;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">CreatePolyR</span>(L, a, <span class="number">5</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;原多项式为: &quot;</span>);</span><br><span class="line">    <span class="built_in">DispPoly</span>(L);</span><br><span class="line"></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;删除系数为 0 项后为: \n\n&quot;</span>);</span><br><span class="line">    <span class="built_in">DelZero</span>(L);</span><br><span class="line">    <span class="built_in">DispPoly</span>(L);</span><br><span class="line"></span><br><span class="line">    <span class="built_in">DestroyPoly</span>(L);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>执行结果如图所示：</p>
+<p><img src="/2022/08/08/51ccbd8b/%E7%A8%8B%E5%BA%8F%E6%BC%8F%E6%B4%9E%E6%B5%8B%E8%AF%95%E7%BB%93%E6%9E%9C1.jpg" alt="result1"></p>
+<p>可以看到，<code>free(p)</code> 操作执行前后，指针变量 <code>p</code> 中内容以及 <code>p</code> 指向的内存中的内容均未发生改变，所以在 <code>free(p)</code> 后执行 <code>p = p-&gt;next</code> 编译器并不会报错，但却给程序带来了逻辑上的漏洞。</p>
+<h2 id="24-程序漏洞修复"><a class="markdownIt-Anchor" href="#24-程序漏洞修复"></a> 2.4. 程序漏洞修复</h2>
+<figure class="highlight diff"><figcaption><span>删除带头结点的多项式单链表中系数为 0 项 (Beta)</span></figcaption><table><tr><td class="code"><pre><span class="line">void DelZero(PolyNode *&amp;L)</span><br><span class="line">&#123;</span><br><span class="line">    PolyNode *pre = L, *p = pre-&gt;next;</span><br><span class="line"></span><br><span class="line">    while (p != NULL)</span><br><span class="line">    &#123;</span><br><span class="line">        if (p-&gt;coef == 0.0)</span><br><span class="line">        &#123;</span><br><span class="line">            pre-&gt;next = p-&gt;next;</span><br><span class="line">            free(p);</span><br><span class="line"><span class="addition">+           p = pre-&gt;next;</span></span><br><span class="line"><span class="addition">+           continue;</span></span><br><span class="line">        &#125;</span><br><span class="line">        pre = p;</span><br><span class="line">        p = p-&gt;next;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>漏洞修复后运行结果如图：</p>
+<p><img src="/2022/08/08/51ccbd8b/%E7%A8%8B%E5%BA%8F%E6%BC%8F%E6%B4%9E%E6%B5%8B%E8%AF%95%E7%BB%93%E6%9E%9C2.jpg" alt="result2"></p>
+<h2 id="25-附加测试"><a class="markdownIt-Anchor" href="#25-附加测试"></a> 2.5. 附加测试</h2>
+<p>在 <strong>VSCode</strong> 下使用 <strong>gcc</strong> 编译以下 C 代码：</p>
+<figure class="highlight c"><figcaption><span>测试 1</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;malloc.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> *p = (<span class="type">int</span> *) <span class="built_in">malloc</span> (<span class="keyword">sizeof</span>(<span class="type">int</span>));</span><br><span class="line"></span><br><span class="line">    *p = <span class="number">9</span>;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;p = %p\n&quot;</span>, p);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;free(p) 前 *p = %d\n&quot;</span>, *p);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;-----------------\n&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="built_in">free</span>(p);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;p = %p\n&quot;</span>, p);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;free(p) 后 *p = %d\n&quot;</span>, *p); </span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;------------------------\n&quot;</span>);</span><br><span class="line">    </span><br><span class="line">    *p = <span class="number">9</span>;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;p = %p\n&quot;</span>, p);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;free(p) 后再执行 *p = 9, 此时 *p = %d\n\n&quot;</span>, *p);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>测试 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>1</mn></mrow><annotation encoding="application/x-tex">1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">1</span></span></span></span> 运行结果如下：</p>
+<p><img src="/2022/08/08/51ccbd8b/%E4%BD%BF%E7%94%A8%E6%8C%87%E5%90%91free%E5%90%8E%E5%86%85%E5%AD%98%E7%9A%84%E6%8C%87%E9%92%881.jpg" alt></p>
+<figure class="highlight c"><figcaption><span>测试 2</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;malloc.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">char</span> *q = (<span class="type">char</span> *) <span class="built_in">malloc</span> (<span class="number">20</span> * <span class="keyword">sizeof</span>(<span class="type">char</span>));</span><br><span class="line"></span><br><span class="line">    q = <span class="string">&quot;Hello World&quot;</span>;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;q = %p\n&quot;</span>, q);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;free(q) 前 q 指向内存中的内容为: %s\n&quot;</span>, q);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;--------------------------------------------\n&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="built_in">free</span>(q);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;q = %p\n&quot;</span>, q);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;free(q) 后 q 指向内存中的内容为: %s\n&quot;</span>, q); </span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;--------------------------------------------\n&quot;</span>);</span><br><span class="line"></span><br><span class="line">    q = <span class="string">&quot;Are you OK?&quot;</span>;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;q = %p\n&quot;</span>, q);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;free(q) 后执行 q = \&quot;Are you OK?\&quot;, 此时 q 指向内存中的内容为: %s\n\n&quot;</span>, q);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>测试 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>2</mn></mrow><annotation encoding="application/x-tex">2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">2</span></span></span></span> 运行结果如下：</p>
+<p><img src="/2022/08/08/51ccbd8b/%E4%BD%BF%E7%94%A8%E6%8C%87%E5%90%91free%E5%90%8E%E5%86%85%E5%AD%98%E7%9A%84%E6%8C%87%E9%92%882.jpg" alt></p>
+<p>可以看到，测试 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>1</mn></mrow><annotation encoding="application/x-tex">1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">1</span></span></span></span> 中 <code>free(p)</code> 后 <code>p</code> 指向内存中的内容发生了改变，而 测试 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>2</mn></mrow><annotation encoding="application/x-tex">2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">2</span></span></span></span> 中 <code>free(q)</code> 后 <code>q</code> 指向内存中的内容并没有发生变化，这又是为什么呢？难道 <strong>gcc</strong> 编译器对于是否覆盖 <code>free</code> 后的内存中的内容还有什么规则吗？这个疑问暂时得不到解答，留待日后弄清。</p>
+<h1 id="3-总结"><a class="markdownIt-Anchor" href="#3-总结"></a> 3. 总结</h1>
+<p>调用 <code>free</code> 函数释放内存后，原先指向这块内存的指针 <code>p</code> 仍然指向这块内存，不过这时候的指向已经是不合法的了。如果这块内存被分配用作其他用途，这时再次引用指针 <code>p</code> (当做 <code>free(p)</code> 之前的用途来使用) 就有可能引发未知的错误 (前言中的程序尽管在 <strong>gcc</strong> 编译下能够正常运行，并且内存释放后也没有再分配，但引用指向已释放内存的指针 <code>p</code> 还是使程序产生了漏洞)。所以，在 <code>free(p)</code> 后，最好不要出现使用指向已释放内存的指针 <code>p</code> 的情况，必要时应将 <code>p</code> 置为 <code>NULL</code>。</p>
+<hr>
+<p><strong>参考资料</strong></p>
+<ol>
+<li>
+<p><a href="http://c.biancheng.net/view/223.html">动态内存分配，C语言动态内存分配详解</a></p>
+</li>
+<li>
+<p><a href="http://c.biancheng.net/view/383.html">malloc和free函数使用注意事项，C语言malloc和free使用详解</a></p>
+</li>
+<li>
+<p><a href="https://www.cnblogs.com/still-smile/p/14900609.html">（C语言内存十八）malloc函数背后的实现原理——内存池</a></p>
+</li>
+<li>
+<p><a href="https://www.cnblogs.com/CheeseZH/p/4555065.html">ZH奶酪：C语言中malloc()和free()函数解析</a></p>
+</li>
+<li>
+<p><a href="https://www.dotcpp.com/wp/653.html">C语言free释放内存后为什么指针里的值不变？竟然还可以输出？</a></p>
+</li>
+<li>
+<p><a href="https://blog.csdn.net/weixin_48344581/article/details/114995109">C语言中free掉动态内存后原本指向这块内存的指针和内存里的值会有什么变化</a></p>
+</li>
+</ol>
+<br>
+<br>
+<center><font face="黑体" color="grey" size="4">———————— END ————————</font></center>]]></content>
+      <categories>
+        <category>编程札记</category>
+        <category>C/C++</category>
+      </categories>
+      <tags>
+        <tag>编程</tag>
+        <tag>C/C++</tag>
+        <tag>链表</tag>
+        <tag>多项式</tag>
+        <tag>free 函数</tag>
+        <tag>动态内存分配</tag>
+      </tags>
   </entry>
   <entry>
     <title>Markdown 学习笔记</title>
@@ -1742,6 +1718,30 @@ _
 <center><font face="黑体" color="black" size="4">----------------- END -----------------</font></center>]]></content>
       <categories>
         <category>markdown</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Hello World</title>
+    <url>/2022/08/05/4a17b156.html</url>
+    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<span id="more"></span>
+<iframe src="https://giphy.com/embed/MeJgB3yMMwIaHmKD4z" width="480" height="394" frameborder="0" class="giphy-embed" allowfullscreen></iframe><p><a href="https://giphy.com/gifs/2000s-00s-middle-school-MeJgB3yMMwIaHmKD4z">via GIPHY</a></p>
+<h2 id="quick-start"><a class="markdownIt-Anchor" href="#quick-start"></a> Quick Start</h2>
+<h3 id="create-a-new-post"><a class="markdownIt-Anchor" href="#create-a-new-post"></a> Create a new post</h3>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
+<h3 id="run-server"><a class="markdownIt-Anchor" href="#run-server"></a> Run server</h3>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
+<h3 id="generate-static-files"><a class="markdownIt-Anchor" href="#generate-static-files"></a> Generate static files</h3>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
+<h3 id="deploy-to-remote-sites"><a class="markdownIt-Anchor" href="#deploy-to-remote-sites"></a> Deploy to remote sites</h3>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+<center><font face="黑体" color="black" size="4">----------------- END -----------------</font></center>]]></content>
+      <categories>
+        <category>其他</category>
       </categories>
   </entry>
 </search>
